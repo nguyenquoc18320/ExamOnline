@@ -34,5 +34,14 @@ public class AccountEntity extends BaseEntity{
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+	
 	
 }

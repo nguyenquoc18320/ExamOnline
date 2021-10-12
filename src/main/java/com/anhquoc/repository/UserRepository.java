@@ -13,6 +13,7 @@ import com.anhquoc.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long>{
 	public UserEntity save(UserEntity entity);
 	public  List<UserEntity> findByEmail(String email);
+	public  UserEntity findOneByEmail(String email);
 	public UserEntity findOneById(Long id);
 	public List<UserEntity> findByName(String name);
 //	
