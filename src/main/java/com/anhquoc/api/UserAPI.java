@@ -3,6 +3,7 @@ package com.anhquoc.api;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.anhquoc.entity.AccountEntity;
 import com.anhquoc.entity.UserEntity;
 import com.anhquoc.service.impl.AccountService;
 import com.anhquoc.service.impl.UserService;
@@ -24,17 +24,36 @@ public class UserAPI {
 	@Autowired
 	AccountService accountService;
 	
-	@PostMapping(value = "/user")
-	public UserEntity createUser(@RequestBody UserEntity userEntity, @RequestBody AccountEntity accountEntity) {
-//		userEntity = userService.createUser(userEntity);
-//		AccountEntity account = accountService.createAccount(accountEntity);
-//		
-		return null;
-	}
+	@Autowired
+	JavaMailSender javaMailSender;
+	
+//	@PostMapping(value = "/user")
+//	public UserEntity createUser(@RequestBody UserAccount userAccount) {
+//		UserEntity userEntity = userAccount.getUser();
+//		AccountEntity accountEntity = userAccount.getAccount();
+//		userEntity = userService.createUser(userEntity, accountEntity);
+//		return userEntity;
+//	}
 	
 	@GetMapping(value = "/user-email/{email}")
 	public List<UserEntity> getUserByEmail(@PathVariable("email") String email) {
 		List<UserEntity>  user = userService.findUserByEmail(email);
 		return user;
+	}
+	
+	@GetMapping(value = "/user/{email}/{password}")
+	public UserEntity getUserByEmailAndPassword(@PathVariable("email") String email, @PathVariable("password") String password) {
+		UserEntity user = userService.getUserByEmailAndPassword(email, password);
+		return user;
+	}
+	
+	@GetMapping(value = "/user-password/{email}")
+	public void resetPassword(@PathVariable("email") String email) {
+//		userService.resetPassword(email, javaMailSender);
+	}
+	
+	@GetMapping(value = "/signup-code/{email}")
+	public void getSignUpCode(@PathVariable("email") String email) {
+		userService.getSignUpCode(email, javaMailSender);
 	}
 }
