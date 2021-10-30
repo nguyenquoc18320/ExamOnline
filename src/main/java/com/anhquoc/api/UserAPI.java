@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.anhquoc.entity.UserEntity;
 import com.anhquoc.service.impl.AccountService;
+import com.anhquoc.service.impl.TemporaryStorageService;
 import com.anhquoc.service.impl.UserService;
 
 @CrossOrigin
@@ -26,6 +27,9 @@ public class UserAPI {
 	
 	@Autowired
 	JavaMailSender javaMailSender;
+	
+	@Autowired 
+	TemporaryStorageService tempStorageService;
 	
 //	@PostMapping(value = "/user")
 //	public UserEntity createUser(@RequestBody UserAccount userAccount) {
@@ -54,6 +58,11 @@ public class UserAPI {
 	
 	@GetMapping(value = "/signup-code/{email}")
 	public void getSignUpCode(@PathVariable("email") String email) {
-		userService.getSignUpCode(email, javaMailSender);
+		tempStorageService.getSignUpCode(email, javaMailSender);
+	}
+	
+	@GetMapping(value= "/code/{email}/{code}")
+	public boolean confirmCode( @PathVariable("email") String email, @PathVariable("code") String code) {
+		return tempStorageService.confirmCode(email, code);
 	}
 }

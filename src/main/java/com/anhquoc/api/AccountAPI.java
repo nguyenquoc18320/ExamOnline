@@ -18,9 +18,9 @@ public class AccountAPI {
 	AccountService accountService;
 	
 	//create new User
-	@PostMapping(value="/account")
-	public AccountEntity createUser(@RequestBody AccountEntity account) {
-		account = accountService.createAccount(account);
+	@PostMapping(value="/account/{code}")
+	public AccountEntity createUser(@RequestBody AccountEntity account, @PathVariable("code") String code) {
+		account = accountService.createAccount(account, code);
 		return account;
 	}
 	

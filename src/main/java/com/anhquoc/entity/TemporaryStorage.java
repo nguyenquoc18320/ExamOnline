@@ -11,6 +11,7 @@ import javax.persistence.Table;
 @Table(name="temporary_storage")
 public class TemporaryStorage {
 	@Id
+	@Column(name = "subject")
 	private String subject;
 	
 	@Column(name = "code")

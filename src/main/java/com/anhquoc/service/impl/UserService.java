@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.anhquoc.api.UserAPI;
 import com.anhquoc.entity.AccountEntity;
 import com.anhquoc.entity.TemporaryStorage;
 import com.anhquoc.entity.UserEntity;
@@ -55,25 +54,7 @@ public class UserService implements IUserService {
 		return user;
 	}
 
-	@Override
-	public void getSignUpCode(String email, JavaMailSender javaMailSender) {
-		Random rand = new Random();
-		String code = "";
-		
-		//code includes 6 digits
-		while(code.length()!=6) {
-			code += String.valueOf(rand.nextInt(10));
-		}
-		
-		System.out.println("Code: "+code);
-		
-		//save to db
-		TemporaryStorage tempEntity = new TemporaryStorage(email, code);
-		tempStorageRepository.save(tempEntity);
-		
-		//send code to email
-		Utils.sendEmail(email, "Online Test - Code to confirm email", "Your code:\n"+ code, javaMailSender);
-	}
+
 	
 
 //	@Override

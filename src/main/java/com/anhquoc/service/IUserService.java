@@ -11,7 +11,7 @@ public interface IUserService {
 	public UserEntity findUserById(Long id);
 	public List<UserEntity> findUserByName(String name);
 	public UserEntity getUserByEmailAndPassword(String email, String password);
-	public void getSignUpCode(String email, JavaMailSender javaMailSender);
+//	public void getSignUpCode(String email, JavaMailSender javaMailSender);
 //	public boolean resetPassword(String email, String subject, String content,JavaMailSender javaMailSender);
 //	public UserEntity createUser(UserEntity user, AccountEntity account);
 }

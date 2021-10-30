@@ -42,6 +42,4 @@ public class AccountEntity extends BaseEntity{
 	public void setUser(UserEntity user) {
 		this.user = user;
 	}
-	
-	
 }

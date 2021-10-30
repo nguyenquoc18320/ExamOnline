@@ -1,10 +1,18 @@
 package com.anhquoc.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="user")
@@ -21,6 +29,14 @@ public class UserEntity extends BaseEntity {
 	
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
+	
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<CourseEntity> courses = new ArrayList<>();
+	
+    @ManyToOne
+    @JoinColumn(name="roleid", nullable=false)
+    private RoleEntity role;
 
 	public String getName() {
 		return name;
@@ -53,4 +69,22 @@ public class UserEntity extends BaseEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public List<CourseEntity> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<CourseEntity> courses) {
+		this.courses = courses;
+	}
+
+	public RoleEntity getRole() {
+		return role;
+	}
+
+	public void setRole(RoleEntity role) {
+		this.role = role;
+	}
+	
+	
 }
