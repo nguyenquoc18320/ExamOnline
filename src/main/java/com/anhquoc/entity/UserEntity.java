@@ -12,10 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserEntity extends BaseEntity {
 
 	@Column(name = "name")
@@ -32,12 +34,23 @@ public class UserEntity extends BaseEntity {
 	
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonIgnoreProperties()
     private List<CourseEntity> courses = new ArrayList<>();
 	
     @ManyToOne
     @JoinColumn(name="roleid", nullable=false)
     private RoleEntity role;
+    
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    List<JoinCourse> joinList = new ArrayList<>();
+    
 
+	@Override
+	public int compareTo(UserEntity e) {
+		return this.getName().compareTo(e.getName());
+	}
+    
 	public String getName() {
 		return name;
 	}

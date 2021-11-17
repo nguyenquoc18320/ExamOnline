@@ -1,16 +1,22 @@
 package com.anhquoc.entity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "course")
-public class CourseEntity extends BaseEntity {
+public class CourseEntity extends BaseEntity implements Serializable {
 	@Column(name="name")
 	private String name;
 	
@@ -20,9 +26,19 @@ public class CourseEntity extends BaseEntity {
 	@Column(name="status")
 	private boolean status;
 	
+	@Column(name = "blocked")
+	private boolean blocked;
+	
+	@Column(name = "deleted")
+	private boolean deleted;
+	
     @ManyToOne
     @JoinColumn(name="userid", nullable=false)
     private UserEntity user;
+    
+    @OneToMany(mappedBy="course", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    List<JoinCourse> joinList = new ArrayList<>();
 
 //    @Column(name="delete")
 //    private boolean delete;
@@ -31,12 +47,14 @@ public class CourseEntity extends BaseEntity {
     	
     }
     
-	public CourseEntity(String name, String description, boolean status, UserEntity user) {
+	public CourseEntity(String name, String description, boolean status, boolean blocked, boolean deleted, UserEntity user) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.status = status;
 		this.user = user;
+		this.blocked = blocked;
+		this.deleted = deleted;
 	}
 
 	public String getName() {
@@ -70,5 +88,31 @@ public class CourseEntity extends BaseEntity {
 	public void setUser(UserEntity user) {
 		this.user = user;
 	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public List<JoinCourse> getJoinList() {
+		return joinList;
+	}
+
+	public void setJoinList(List<JoinCourse> joinList) {
+		this.joinList = joinList;
+	}
+	
+	
 	
 }

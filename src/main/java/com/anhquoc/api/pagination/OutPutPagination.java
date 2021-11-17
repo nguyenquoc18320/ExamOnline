@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.anhquoc.entity.CourseEntity;
 
-public class OutPutCouresPagination {
+public class OutPutPagination<T> {
 	private int page;
 	private int totalPage;
-	private List<CourseEntity> courseList;
+	private List<T> entityList;
 	
-	public OutPutCouresPagination() {
-		courseList = new ArrayList<>();
+	public OutPutPagination() {
+		entityList = new ArrayList<>();
 	}
 
 	public int getPage() {
@@ -30,12 +30,12 @@ public class OutPutCouresPagination {
 		this.totalPage = totalPage;
 	}
 
-	public List<CourseEntity> getCourseList() {
-		return courseList;
+	public List<T> getEntityList() {
+		return entityList;
 	}
 
-	public void setCourseList(List<CourseEntity> courseList) {
-		this.courseList = courseList;
+	public void setEntityList(List<T> entityList) {
+		this.entityList = entityList;
 	}
 
 	

@@ -66,6 +66,11 @@ public abstract class BaseEntity {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public int compareTo(UserEntity e) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 }

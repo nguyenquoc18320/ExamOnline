@@ -10,10 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="role")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RoleEntity {
 	@Id
 	@Column(name="id")
@@ -24,6 +26,7 @@ public class RoleEntity {
 
     @OneToMany(mappedBy="role", fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonIgnoreProperties()
     private List<UserEntity> users = new ArrayList<>();
 	
 	public RoleEntity(Long id, String name) {
