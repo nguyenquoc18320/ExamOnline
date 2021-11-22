@@ -41,6 +41,11 @@ public class AccountService implements IAccountService{
 	 */
 	@Override
 	public AccountEntity createAccount(AccountEntity account, String code) {
+		//check len of password
+		if (account.getPassword().length() <8) {
+			return null;
+		}
+		
 		//to create a new account
 		account.setId(null);
 		UserEntity user = account.getUser();

@@ -19,11 +19,38 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long>{
 	public CourseEntity findOneByUserAndNameAndDeleted(UserEntity user, String name, boolean deleted);
 //	public List<CourseEntity> findByUserAndNameContaining(UserEntity user, String courseName, Pageable pageable);
 	
+	/*
+	 * get course with user
+	 */
+	//course name
 	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.deleted=False ")
-	public List<CourseEntity> findCoursesWithUserAndCourseName(UserEntity user, String courseName, Pageable pageable);
+	public List<CourseEntity> findCoursesByUser(UserEntity user, String courseName, Pageable pageable);
 	
 	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.deleted=False")
-	public List<CourseEntity> findCoursesWithUserAndCourseName(UserEntity user, String courseName);
+	public List<CourseEntity> findCoursesByUser(UserEntity user, String courseName);
+	
+	//coursename, status, blocked
+	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.status = ?3 AND c.blocked= ?4 AND c.deleted=False ")
+	public List<CourseEntity> findCoursesByUser(UserEntity user, String courseName, boolean status, boolean blocked, Pageable pageable);
+	
+	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.status = ?3 AND c.blocked= ?4 AND c.deleted=False")
+	public List<CourseEntity> findCoursesByUser(UserEntity user, String courseName, boolean status, boolean blocked);
+	
+	
+	//coursename, status
+	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.status = ?3 AND c.deleted=False ")
+	public List<CourseEntity> findCoursesByUserWithStatus(UserEntity user, String courseName, boolean status, Pageable pageable);
+	
+	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.status = ?3  AND c.deleted=False")
+	public List<CourseEntity> findCoursesByUserWithStatus(UserEntity user, String courseName, boolean status);
+	
+	//coursename, blocked
+	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.blocked= ?3 AND c.deleted=False ")
+	public List<CourseEntity> findCoursesByUserWithBlocked(UserEntity user, String courseName, boolean blocked, Pageable pageable);
+	
+	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.blocked= ?3 AND c.deleted=False")
+	public List<CourseEntity> findCoursesByUserWithBlocked(UserEntity user, String courseName, boolean blocked);
+	
 	
 	/*
 	 * search courses with conditions: course name, author's name, status, blocked, pageable

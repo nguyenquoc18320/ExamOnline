@@ -30,10 +30,10 @@ public class CourseService implements ICourseService {
 			if (user == null) {
 				return null;
 			}
-			
-			//check to satify that course name is unique
+
+			// check to satify that course name is unique
 			CourseEntity tempCourse = courseRepository.findOneByUserAndNameAndDeleted(user, course.getName(), false);
-			if(tempCourse != null) {
+			if (tempCourse != null) {
 				return null;
 			}
 
@@ -47,6 +47,10 @@ public class CourseService implements ICourseService {
 			return null;
 		}
 	}
+
+	/*
+	 * get list course by userid
+	 */
 
 	@Override
 	public List<CourseEntity> getCourseByUser(Long userid, Pageable pageable) {
@@ -83,10 +87,11 @@ public class CourseService implements ICourseService {
 			if (currentCourse.getUser().getId() != userid) {
 				return null;
 			}
-			
-			//check to satify that course name is unique
-			CourseEntity tempCourse = courseRepository.findOneByUserAndNameAndDeleted(currentCourse.getUser(), course.getName(), false);
-			if(tempCourse != null && tempCourse.getId() != course.getId()) {
+
+			// check to satify that course name is unique
+			CourseEntity tempCourse = courseRepository.findOneByUserAndNameAndDeleted(currentCourse.getUser(),
+					course.getName(), false);
+			if (tempCourse != null && tempCourse.getId() != course.getId()) {
 				return null;
 			}
 
@@ -131,16 +136,54 @@ public class CourseService implements ICourseService {
 	 * pagination)
 	 */
 	@Override
-	public List<CourseEntity> getCourseOfUserByCourseName(Long userid, Pageable pageable, String courseName) {
+	public List<CourseEntity> getCoursesOfUser(Long userid, String courseName, Pageable pageable) {
 		List<CourseEntity> courses = new ArrayList<>();
 		UserEntity user = userRepository.getOne(userid);
 		if (user == null) {
 			return courses;
 		}
 
-//		courses = courseRepository.findByUserAndNameContaining(user, courseName, pageable);
-//		courses = courseRepository.findByUserAndCourseName(user, courseName);
-		courses = courseRepository.findCoursesWithUserAndCourseName(user, courseName, pageable);
+		courses = courseRepository.findCoursesByUser(user, courseName, pageable);
+		return courses;
+	}
+
+	@Override
+	public List<CourseEntity> getCoursesOfUser(Long userid, String courseName, boolean status, boolean blocked,
+			Pageable pageable) {
+		List<CourseEntity> courses = new ArrayList<>();
+		UserEntity user = userRepository.getOne(userid);
+		if (user == null) {
+			return courses;
+		}
+
+		courses = courseRepository.findCoursesByUser(user, courseName, status, blocked, pageable);
+		return courses;
+	}
+
+	@Override
+	public List<CourseEntity> getCoursesOfUserWithStatus(Long userid, String courseName, boolean status,
+			Pageable pageable) {
+		List<CourseEntity> courses = new ArrayList<>();
+		UserEntity user = userRepository.getOne(userid);
+		if (user == null) {
+			return courses;
+		}
+
+		courses = courseRepository.findCoursesByUserWithStatus(user, courseName, status, pageable);
+		return courses;
+	}
+
+	// course name, blocked
+	@Override
+	public List<CourseEntity> getCoursesOfUserWithBlocked(Long userid, String courseName, boolean blocked,
+			Pageable pageable) {
+		List<CourseEntity> courses = new ArrayList<>();
+		UserEntity user = userRepository.getOne(userid);
+		if (user == null) {
+			return courses;
+		}
+
+		courses = courseRepository.findCoursesByUserWithBlocked(user, courseName, blocked, pageable);
 		return courses;
 	}
 
@@ -149,14 +192,50 @@ public class CourseService implements ICourseService {
 	 * pagination)
 	 */
 	@Override
-	public List<CourseEntity> getCourseOfUserByCourseName(Long userid, String courseName) {
+	public List<CourseEntity> getCoursesOfUser(Long userid, String courseName) {
 		List<CourseEntity> courses = new ArrayList<>();
 		UserEntity user = userRepository.getOne(userid);
 		if (user == null) {
 			return courses;
 		}
 
-		courses = courseRepository.findCoursesWithUserAndCourseName(user, courseName);
+		courses = courseRepository.findCoursesByUser(user, courseName);
+		return courses;
+	}
+
+	@Override
+	public List<CourseEntity> getCoursesOfUser(Long userid, String courseName, boolean status, boolean blocked) {
+		List<CourseEntity> courses = new ArrayList<>();
+		UserEntity user = userRepository.getOne(userid);
+		if (user == null) {
+			return courses;
+		}
+
+		courses = courseRepository.findCoursesByUser(user, courseName, status, blocked);
+		return courses;
+	}
+
+	@Override
+	public List<CourseEntity> getCoursesOfUserWithStatus(Long userid, String courseName, boolean status) {
+		List<CourseEntity> courses = new ArrayList<>();
+		UserEntity user = userRepository.getOne(userid);
+		if (user == null) {
+			return courses;
+		}
+
+		courses = courseRepository.findCoursesByUserWithStatus(user, courseName, status);
+		return courses;
+	}
+
+	@Override
+	public List<CourseEntity> getCoursesOfUserWithBlocked(Long userid, String courseName, boolean blocked) {
+		List<CourseEntity> courses = new ArrayList<>();
+		UserEntity user = userRepository.getOne(userid);
+		if (user == null) {
+			return courses;
+		}
+
+		courses = courseRepository.findCoursesByUserWithBlocked(user, courseName, blocked);
 		return courses;
 	}
 
@@ -218,4 +297,83 @@ public class CourseService implements ICourseService {
 		}
 		return courses;
 	}
+
+	/*
+	 * DELETE course
+	 */
+
+	@Override
+	public String deleteCourse(Long userid, Long courseid) {
+		// get course
+		CourseEntity course = courseRepository.findOneByIdAndBlockedAndDeleted(courseid, false, false);
+
+		// check course exist
+		if (course == null) {
+			return "Can't find the course";
+		}
+
+		// check user's permission
+		if (course.getUser().getId() != userid) {
+			return "Can't delete the course";
+		}
+
+		// chang delete attribute to true, and block to true
+		course.setDeleted(true);
+		course.setBlocked(true);
+		courseRepository.save(course);
+		return "The course " + course.getName() + " is deleted";
+	}
+
+	/*
+	 * BLOCK course
+	 */
+
+	@Override
+	public String blockCourse(Long userid, Long courseid) {
+		// get course
+		CourseEntity course = courseRepository.findOneByIdAndBlockedAndDeleted(courseid, false, false);
+
+		// check course exist
+		if (course == null) {
+			return "Can't find the course";
+		}
+
+		// check user's permission
+		UserEntity user = userRepository.getOne(userid);
+		if (user.getRole().getId() != 1) {
+			return "Can't block the course";
+		}
+
+		// chang delete attribute to true, and block to true
+		course.setBlocked(true);
+		courseRepository.save(course);
+		return "The course " + course.getName() + " is blocked";
+	}
+
+	/*
+	 * UNBLOCK course
+	 */
+
+	@Override
+	public String unblockCourse(Long userid, Long courseid) {
+		// get course
+		CourseEntity course = courseRepository.findOneByIdAndBlockedAndDeleted(courseid, true, false);
+
+		// check course exist
+		if (course == null) {
+			return "Can't unblock the course, The course can be blocked!";
+		}
+
+		// check user's permission
+		UserEntity user = userRepository.getOne(userid);
+		if (user.getRole().getId() != 1) {
+			return "Can't unblock the course";
+		}
+
+		// chang delete attribute to true, and block to true
+		course.setBlocked(false);
+		courseRepository.save(course);
+		return "The course " + course.getName() + " is unblocked";
+	}
+
 }
