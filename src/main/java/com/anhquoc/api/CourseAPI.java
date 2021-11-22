@@ -1,5 +1,7 @@
 package com.anhquoc.api;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,4 +58,16 @@ public class CourseAPI {
 		CourseEntity updatedCourse = courseService.update(course, userid);
 		return updatedCourse;
 	}
+	
+	@GetMapping("/course-by-user/{userid}")
+	public List<CourseEntity> getCourseByUser(@PathVariable("userid") Long userid){
+		
+		return courseService.getCourseByUserId(userid);
+	}
+	
+	@GetMapping("/course/{courseid}")
+	public CourseEntity getCourseByCourseID(@PathVariable("courseid") Long courseid){		
+		return courseService.getCourseByCourseId(courseid);
+	}
+	
 }

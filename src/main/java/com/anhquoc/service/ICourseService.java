@@ -11,4 +11,6 @@ public interface ICourseService {
 	public int totalCourseOfUser(Long userid);
 	public CourseEntity update(CourseEntity course, Long userid);
 	public CourseEntity getCourse(Long userid, Long courseid);
+	public List<CourseEntity> getCourseByUserId(Long userid);
+	public CourseEntity getCourseByCourseId(Long courseid);
 }

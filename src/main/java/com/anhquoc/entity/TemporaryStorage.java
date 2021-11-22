@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Table(name="temporary_storage")
 public class TemporaryStorage {
 	@Id
-	@Column(name = "subject")
+	@Column(length = 64)
 	private String subject;
 	
 	@Column(name = "code")

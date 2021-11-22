@@ -62,5 +62,20 @@ public class AccountService implements IAccountService{
 		account = accountRepository.save(account);
 		return account;
 	}
+	
+	@Override
+	public AccountEntity forgetPassword(AccountEntity account, String email) {
+		
+		UserEntity user = userRepository.findOneByEmail(email);
+		AccountEntity account2 = accountRepository.findOneByUser(user);
+		account.setId(account2.getId());
+		if (account2.getId() != null)
+			account = accountRepository.save(account);
+		else 
+			return null;
+		return account;
+		
+	}
+	
 
 }

@@ -55,7 +55,33 @@ public class UserService implements IUserService {
 	}
 
 
+	@Override
+	public UserEntity updateUser(UserEntity user) {
+		//account.setId(null);
+		AccountEntity account = accountRepository.findOneByUser(user);
+		if(userRepository.findByEmail(user.getEmail()).size()>1)
+			return null;
+		
+		//to update
+		user = userRepository.save(user);
+		
+//		account.setUser(user);
+//		account = accountRepository.save(account);
+		return user;
+	}
 	
+	@Override
+	public AccountEntity changePassword(AccountEntity account, String email) {
+		
+		UserEntity user = userRepository.findOneByEmail(email);
+		AccountEntity account2 = accountRepository.findOneByUser(user);
+		account.setId(account2.getId());
+		if (account2.getId() != null && account.getStatus().equals(account2.getPassword()))
+			account = accountRepository.save(account);
+		else 
+			return null;
+		return account;
+	}
 
 //	@Override
 //	public boolean resetPassword(String email, String subject, String content, JavaMailSender javaMailSender) {
