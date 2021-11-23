@@ -95,4 +95,7 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long>{
 			+ " WHERE c.id =?1 AND c.blocked=?2 AND c.deleted=False AND c.deleted=False")
 	public CourseEntity getCourseByBlocked(Long courseid, boolean blockedStatus);
 	
+	public List<CourseEntity> findAllByUser(UserEntity user, Pageable pageable);
+	public List<CourseEntity> findAllByUser(UserEntity user);
+	public CourseEntity findOneById(Long id);
 }

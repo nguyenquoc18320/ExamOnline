@@ -376,4 +376,24 @@ public class CourseService implements ICourseService {
 		return "The course " + course.getName() + " is unblocked";
 	}
 
+	@Override
+	public List<CourseEntity> getCourseByUserId(Long userid) {
+		UserEntity user = userRepository.findOneById(userid);
+		if (user == null) {
+			return null;
+		}
+
+		List<CourseEntity> courses = courseRepository.findAllByUser(user);
+		return courses;
+	}
+	@Override
+	public CourseEntity getCourseByCourseId(Long courseid) {
+		CourseEntity course = courseRepository.findOneById(courseid);
+		if (course == null) {
+			return null;
+		}
+		return course;
+		
+	}
+	
 }

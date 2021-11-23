@@ -33,4 +33,6 @@ public interface ICourseService {
 	public String unblockCourse(Long userid, Long courseid);
 
 	
+	public List<CourseEntity> getCourseByUserId(Long userid);
+	public CourseEntity getCourseByCourseId(Long courseid);
 }

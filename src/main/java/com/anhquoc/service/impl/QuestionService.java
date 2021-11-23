@@ -50,4 +50,23 @@ public class QuestionService implements IQuestionService{
 		List<QuestionEntity> questions = questionRepository.findAllByTest(test);
 		return questions;
 	}
+	
+	@Override
+	public QuestionEntity getQuestionByTestIDandQsNumber(Long testid, int numberquestion) {
+		TestEntity test = testRepository.findOneById(testid);
+		QuestionEntity question = null;
+		List<QuestionEntity> questions = questionRepository.findAllByTest(test);
+		for(int i = 0; i< questions.size(); i++) {
+			if(questions.get(i).getQuestionnumber() == numberquestion) {
+				question = questions.get(i);
+			}
+		}
+		//QuestionEntity question = questionRepository.findOneByQuestionNumber(questionnumber);
+		return question;
+	}
+//	@Override
+//	public QuestionEntity updateQuestion(QuestionEntity question, Long testid) {
+//		QuestionEntity currentQuestion = questionRepository.findOneById(question.getId());
+//		return null;
+//	}
 }

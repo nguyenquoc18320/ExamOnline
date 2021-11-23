@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,8 +32,15 @@ public class UserEntity extends BaseEntity {
 	@Column(name = "dateofbirth")
 	private Date dateOfBirth;
 
-	@Column(name = "email", unique = true, nullable = false)
+	// @Column(name = "email", unique = true, nullable = false)
+	// private String email;
+
+	
+	@Column(length = 64, name = "email", unique = true, nullable = false)
 	private String email;
+	
+	@Column(name = "image")
+	private String image;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -55,7 +63,7 @@ public class UserEntity extends BaseEntity {
 	public int compareTo(UserEntity e) {
 		return this.getName().compareTo(e.getName());
 	}
-
+    
 	public String getName() {
 		return name;
 	}
@@ -103,6 +111,14 @@ public class UserEntity extends BaseEntity {
 	public void setRole(RoleEntity role) {
 		this.role = role;
 	}
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public List<QuestionEntity> getQuestions() {
 		return questions;
@@ -112,4 +128,5 @@ public class UserEntity extends BaseEntity {
 		this.questions = questions;
 	}
 
+	
 }
