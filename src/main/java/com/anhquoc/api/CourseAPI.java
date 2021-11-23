@@ -26,6 +26,7 @@ public class CourseAPI {
 	@Autowired
 	private CourseService courseService;
 
+	
 	@PostMapping("/course")
 	public CourseEntity createCourse(@RequestBody CourseEntity course) {
 		course = courseService.createCourse(course);
@@ -103,12 +104,28 @@ public class CourseAPI {
 		return output;
 	}
 
+	
+	/*
+	 * Get list of courses of a user to use for pagination
+	 */
+//	@GetMapping("/user-course/{userid}")
+//	public OutPutCouresPagination getCourseByUserIDForPagination(@PathVariable("userid") Long userid, @RequestParam("page") int page, @RequestParam("limit") int limit) {
+//		OutPutCouresPagination output = new OutPutCouresPagination();
+//		output.setPage(page);
+//		Pageable pageable = PageRequest.of(page-1, limit);
+//		output.setCourseList(courseService.getCourseByUser(userid, pageable));
+//		output.setTotalPage((int)Math.ceil((float)courseService.totalCourseOfUser(userid)/limit));
+////		System.out.println((int)Math.ceil((float)courseService.totalCourseOfUser(userid)/limit));
+//		return output;
+//	}
+	
 	@GetMapping("/course")
 	public CourseEntity getCourse(@RequestParam("userid") Long userid, @RequestParam("courseid") Long courseid) {
 		CourseEntity course = courseService.getCourse(userid, courseid);
 		return course;
 	}
 
+	
 	/*
 	 * Update course info
 	 */
@@ -206,4 +223,16 @@ public class CourseAPI {
 		return result;
 	}
 
+	
+	@GetMapping("/course-by-user/{userid}")
+	public List<CourseEntity> getCourseByUser(@PathVariable("userid") Long userid){
+		
+		return courseService.getCourseByUserId(userid);
+	}
+	
+	@GetMapping("/course/{courseid}")
+	public CourseEntity getCourseByCourseID(@PathVariable("courseid") Long courseid){		
+		return courseService.getCourseByCourseId(courseid);
+	}
+	
 }

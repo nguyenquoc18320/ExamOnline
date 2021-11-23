@@ -40,6 +40,10 @@ public class CourseEntity extends BaseEntity implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     List<JoinCourse> joinList = new ArrayList<>();
 
+	@OneToMany(mappedBy="course", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<TestEntity> tests = new ArrayList<>();
+
 //    @Column(name="delete")
 //    private boolean delete;
     
@@ -114,5 +118,14 @@ public class CourseEntity extends BaseEntity implements Serializable {
 	}
 	
 	
+	
+	
+	public List<TestEntity> getTests() {
+		return tests;
+	}
+
+	public void setTests(List<TestEntity> tests) {
+		this.tests = tests;
+	}
 	
 }

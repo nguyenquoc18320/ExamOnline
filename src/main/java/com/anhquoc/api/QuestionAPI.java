@@ -29,4 +29,8 @@ public class QuestionAPI {
 	public List<QuestionEntity> getQuestionByTestId(@PathVariable("testid") Long testid){
 		return questionService.getQuestionByTestId(testid);
 	}
+	@GetMapping("/question-exist/{testid}/{numberquestion}")
+	public QuestionEntity getQuestionByTestIDandQsNumber(@PathVariable("testid") Long testid, @PathVariable("numberquestion") int numberquestion) {
+		return questionService.getQuestionByTestIDandQsNumber(testid, numberquestion);
+	}
 }
