@@ -51,7 +51,9 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long>{
 	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.name LIKE %?2% AND c.blocked= ?3 AND c.deleted=False")
 	public List<CourseEntity> findCoursesByUserWithBlocked(UserEntity user, String courseName, boolean blocked);
 	
-	
+	// list course by user
+	@Query(value = "SELECT c FROM CourseEntity c WHERE c.user = ?1 AND c.deleted=False")
+	public List<CourseEntity> findCoursesByUser(UserEntity user);
 	/*
 	 * search courses with conditions: course name, author's name, status, blocked, pageable
 	 */

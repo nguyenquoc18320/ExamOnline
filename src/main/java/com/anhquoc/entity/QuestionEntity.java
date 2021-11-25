@@ -54,6 +54,9 @@ public class QuestionEntity extends BaseEntity{
 	@Column(name="j")
 	private String optionJ;
 	
+	@Column(name = "deleted")
+	private boolean deleted;
+	
 	@ManyToOne
     @JoinColumn(name="testid", nullable=false)
     private TestEntity test;
@@ -64,7 +67,7 @@ public class QuestionEntity extends BaseEntity{
 	public QuestionEntity() {
 		
 	}
-	public QuestionEntity(int questionnumber,String correctanswer, String content, String optionA, String optionB, String optionC, String optionD, String optionE, String optionF, String optionG, String optionH, String optionI, String optionJ, TestEntity test) {
+	public QuestionEntity(int questionnumber,String correctanswer, String content, String optionA, String optionB, String optionC, String optionD, String optionE, String optionF, String optionG, String optionH, String optionI, String optionJ, boolean deleted, TestEntity test) {
 		super();
 		this.questionnumber = questionnumber;
 		this.correctanswer = correctanswer;
@@ -78,6 +81,7 @@ public class QuestionEntity extends BaseEntity{
 		this.optionH = optionH;
 		this.optionI = optionI;
 		this.optionJ = optionJ;
+		this.deleted = deleted;
 		this.test = test;
 	}
 	
@@ -158,6 +162,12 @@ public class QuestionEntity extends BaseEntity{
 	}
 	public void setOptionJ(String optionJ) {
 		this.optionJ = optionJ;
+	}	
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	public TestEntity getTest() {
 		return test;
@@ -171,32 +181,5 @@ public class QuestionEntity extends BaseEntity{
 	public void setUsers(List<UserEntity> users) {
 		this.users = users;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

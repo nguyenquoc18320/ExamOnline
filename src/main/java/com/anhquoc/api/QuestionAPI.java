@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,5 +33,13 @@ public class QuestionAPI {
 	@GetMapping("/question-exist/{testid}/{numberquestion}")
 	public QuestionEntity getQuestionByTestIDandQsNumber(@PathVariable("testid") Long testid, @PathVariable("numberquestion") int numberquestion) {
 		return questionService.getQuestionByTestIDandQsNumber(testid, numberquestion);
+	}
+	@PutMapping("/question")
+	public QuestionEntity updateQuestion(@RequestBody QuestionEntity question) {
+		return questionService.updateQuestion(question);
+	}
+	@PutMapping("/delete-question/{testid}/{numberquestion}")
+	public QuestionEntity deleteQuestion(@PathVariable("testid") Long testid, @PathVariable("numberquestion") int numberquestion) {
+		return questionService.deleteQuestion(testid, numberquestion);
 	}
 }
