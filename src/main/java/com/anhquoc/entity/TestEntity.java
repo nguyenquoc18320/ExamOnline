@@ -25,8 +25,14 @@ public class TestEntity extends BaseEntity{
 	@Column(name = "duration")
 	private int duration;
 	
+	@Column(name="status")
+	private boolean status;
+	
 	@Column(name = "attempt_number")
 	private int attemptnumber;
+	
+	@Column(name = "deleted")
+	private boolean deleted;
 	
 	@ManyToOne
     @JoinColumn(name="courseid", nullable=false)
@@ -41,12 +47,14 @@ public class TestEntity extends BaseEntity{
     	
     }
 	
-	public TestEntity(String name, String description, int duration, int attemptnumber, CourseEntity course) {
+	public TestEntity(String name, String description, int duration, boolean status, int attemptnumber, boolean deleted, CourseEntity course) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.duration = duration;
+		this.status = status;
 		this.attemptnumber = attemptnumber;
+		this.deleted = deleted;
 		this.course = course;
 	}	
 	public String getName() {
@@ -72,6 +80,14 @@ public class TestEntity extends BaseEntity{
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 
 	public int getAttemptnumber() {
 		return attemptnumber;
@@ -81,12 +97,28 @@ public class TestEntity extends BaseEntity{
 		this.attemptnumber = attemptnumber;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public CourseEntity getCourse() {
 		return course;
 	}
 
 	public void setCourse(CourseEntity course) {
 		this.course = course;
+	}
+
+	public List<QuestionEntity> getTests() {
+		return tests;
+	}
+
+	public void setTests(List<QuestionEntity> tests) {
+		this.tests = tests;
 	}
 
 	

@@ -383,7 +383,8 @@ public class CourseService implements ICourseService {
 			return null;
 		}
 
-		List<CourseEntity> courses = courseRepository.findAllByUser(user);
+		//List<CourseEntity> courses = courseRepository.findAllByUser(user);
+		List<CourseEntity> courses = courseRepository.findCoursesByUser(user);
 		return courses;
 	}
 	@Override

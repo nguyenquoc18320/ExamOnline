@@ -47,7 +47,7 @@ public class QuestionService implements IQuestionService{
 		if (test == null) {
 			return null;
 		}
-		List<QuestionEntity> questions = questionRepository.findAllByTest(test);
+		List<QuestionEntity> questions = questionRepository.findQuestionsByTest(test);
 		return questions;
 	}
 	
@@ -64,9 +64,28 @@ public class QuestionService implements IQuestionService{
 		//QuestionEntity question = questionRepository.findOneByQuestionNumber(questionnumber);
 		return question;
 	}
-//	@Override
-//	public QuestionEntity updateQuestion(QuestionEntity question, Long testid) {
-//		QuestionEntity currentQuestion = questionRepository.findOneById(question.getId());
-//		return null;
-//	}
+	@Override
+	public QuestionEntity updateQuestion(QuestionEntity question) {
+		TestEntity currentTest = testRepository.findOneById(question.getTest().getId())	;
+		QuestionEntity currentQuestion = getQuestionByTestIDandQsNumber(question.getTest().getId(), question.getQuestionnumber());
+		
+		if ( currentQuestion ==null || currentTest == null) {
+			return null;
+		}
+		question.setId(currentQuestion.getId());
+		question = questionRepository.save(question);
+		return question;
+	}
+	
+	@Override
+	public QuestionEntity deleteQuestion(Long testid, int numberquestion) {
+		QuestionEntity question = getQuestionByTestIDandQsNumber(testid,numberquestion);
+		
+		if ( question ==null) {
+			return null;
+		}
+		question.setDeleted(true);
+		questionRepository.save(question);
+		return question;
+	}
 }

@@ -226,7 +226,6 @@ public class CourseAPI {
 	
 	@GetMapping("/course-by-user/{userid}")
 	public List<CourseEntity> getCourseByUser(@PathVariable("userid") Long userid){
-		
 		return courseService.getCourseByUserId(userid);
 	}
 	

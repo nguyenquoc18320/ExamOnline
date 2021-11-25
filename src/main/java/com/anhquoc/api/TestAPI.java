@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anhquoc.entity.CourseEntity;
+import com.anhquoc.entity.QuestionEntity;
 import com.anhquoc.entity.TestEntity;
 import com.anhquoc.service.impl.CourseService;
 import com.anhquoc.service.impl.TestService;
@@ -46,5 +47,9 @@ public class TestAPI {
 		test.setId(testid);
 		TestEntity updatedTest = testService.updateTest(test);
 		return updatedTest;
+	}
+	@PutMapping("/delete-test/{courseid}/{testid}")
+	public TestEntity deleteTest(@PathVariable("courseid") Long courseid, @PathVariable("testid") Long testid) {
+		return testService.deleteTest(courseid, testid);
 	}
 }

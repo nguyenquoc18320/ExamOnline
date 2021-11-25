@@ -9,4 +9,5 @@ public interface ITestService {
 	public List<TestEntity> getTestByCourse(Long courseid);
 	public TestEntity getTesteByTestId(Long testid);
 	public TestEntity updateTest(TestEntity test);
+	public TestEntity deleteTest(Long courseid, Long testid);
 }
