@@ -93,7 +93,7 @@ public class CourseEntity extends BaseEntity implements Serializable {
 		this.user = user;
 	}
 
-	public boolean isBlocked() {
+	public boolean getBlocked() {
 		return blocked;
 	}
 
@@ -101,7 +101,7 @@ public class CourseEntity extends BaseEntity implements Serializable {
 		this.blocked = blocked;
 	}
 
-	public boolean isDeleted() {
+	public boolean getDeleted() {
 		return deleted;
 	}
 

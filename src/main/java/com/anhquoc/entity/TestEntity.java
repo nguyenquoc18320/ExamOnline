@@ -1,6 +1,7 @@
 package com.anhquoc.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -34,6 +35,12 @@ public class TestEntity extends BaseEntity{
 	@Column(name = "deleted")
 	private boolean deleted;
 	
+	@Column(name="start")
+	private Date start;
+	
+	@Column(name="end")
+	private Date end;
+	
 	@ManyToOne
     @JoinColumn(name="courseid", nullable=false)
     private CourseEntity course;
@@ -42,6 +49,9 @@ public class TestEntity extends BaseEntity{
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<QuestionEntity> tests = new ArrayList<>();
 	
+	@OneToMany(mappedBy="test", fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private List<TestUserEntity> testUser = new ArrayList<TestUserEntity>(); 
 	
 	public TestEntity() {
     	
@@ -119,6 +129,30 @@ public class TestEntity extends BaseEntity{
 
 	public void setTests(List<QuestionEntity> tests) {
 		this.tests = tests;
+	}
+
+	public List<TestUserEntity> getTestUser() {
+		return testUser;
+	}
+
+	public void setTestUser(List<TestUserEntity> testUser) {
+		this.testUser = testUser;
+	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
 	}
 
 	

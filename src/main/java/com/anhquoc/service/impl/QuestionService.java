@@ -1,5 +1,6 @@
 package com.anhquoc.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.anhquoc.entity.AnswerEntity;
 import com.anhquoc.entity.CourseEntity;
 import com.anhquoc.entity.QuestionEntity;
 import com.anhquoc.entity.TestEntity;
+import com.anhquoc.entity.TestUserEntity;
 import com.anhquoc.entity.UserEntity;
 import com.anhquoc.repository.QuestionRepository;
 import com.anhquoc.repository.TestRepository;
@@ -20,6 +22,9 @@ public class QuestionService implements IQuestionService{
 	private QuestionRepository questionRepository;
 	@Autowired
 	private TestRepository testRepository;
+	
+	@Autowired
+	private TestUserService testUserService;
 	
 	public QuestionEntity createQuestion(QuestionEntity question) {
 		try {
@@ -87,5 +92,24 @@ public class QuestionService implements IQuestionService{
 		question.setDeleted(true);
 		questionRepository.save(question);
 		return question;
+	}
+
+	/*
+	 * return questions list for attending test
+	 */
+	@Override
+	public List<QuestionEntity> getQuestionsInAttendingTest(Long testid, Long userid) {
+		//check test, attending
+		TestUserEntity testUser = testUserService.getContinuingTestUser(testid, userid);
+		List<QuestionEntity> questions = new ArrayList<QuestionEntity>();
+		if(testUser == null) {
+			return questions;
+		}
+		
+		TestEntity test = testRepository.getTest(testid, true);
+		
+		questions = questionRepository.findQuestionsByTest(test);
+		
+		return questions;
 	}
 }

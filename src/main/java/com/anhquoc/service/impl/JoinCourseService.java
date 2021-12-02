@@ -142,5 +142,26 @@ public class JoinCourseService implements IJoinCourseService {
 		JoinCourse joinCourse = new JoinCourse(user, course, false);
 		joinCourseRepository.save(joinCourse);
 		return user.getName() +" is deleted!";
+	}
+
+	/*
+	 * get cours list a user joined
+	 */
+	@Override
+	public List<CourseEntity> getCoursesByUser(Long userid, Pageable pageable) {
+		List<CourseEntity> courses = new ArrayList<CourseEntity>();
+		courses = joinCourseRepository.getCoursesByUser(userid, pageable);
+		return courses;
+	}
+
+	@Override
+	public List<CourseEntity> getCoursesByUser(Long userid) {
+		List<CourseEntity> courses = new ArrayList<CourseEntity>();
+		courses = joinCourseRepository.getCoursesByUser(userid);
+		return courses;
 	}	
+	
+	
+	
+	
 }
