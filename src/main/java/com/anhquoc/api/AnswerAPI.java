@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anhquoc.entity.AnswerEntity;
@@ -30,4 +32,27 @@ public class AnswerAPI {
 //	public List<AnswerEntity> getQuestionAnswerByTest(@PathVariable("testid") Long testid){
 //		return answerService.getQuestionAnswerByTest(testid);
 //	}
+	
+	/*
+	 * update answer in a test user is attending
+	 */
+	@PutMapping(value="/answer")
+	public void answer(@RequestParam("userid") Long userid, @RequestParam("questionid") Long questionid, @RequestParam("selection") String selection) {
+		answerService.answer(userid, questionid, selection);
+	}
+	
+	/*
+	 * get answers in test user is attending
+	 */
+	@GetMapping(value="/answer/attending-test")
+	public String[][] getAnswersForAttendingTest(@RequestParam("testid") Long testid, @RequestParam("userid") Long userid){
+		List<AnswerEntity> answers = answerService.getAnswersForAttendingTest(testid, userid);
+		String[][] ans = new String[answers.size()][2];
+		
+		for(int i=0; i<answers.size(); i++) {
+			ans[i][0] = answers.get(i).getId().getQuestionId().toString();
+			ans[i][1] = answers.get(i).getSelection();
+		}
+		return ans;
+	}
 }

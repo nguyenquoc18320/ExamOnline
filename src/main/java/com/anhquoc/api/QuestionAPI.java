@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anhquoc.entity.QuestionEntity;
@@ -41,5 +42,13 @@ public class QuestionAPI {
 	@PutMapping("/delete-question/{testid}/{numberquestion}")
 	public QuestionEntity deleteQuestion(@PathVariable("testid") Long testid, @PathVariable("numberquestion") int numberquestion) {
 		return questionService.deleteQuestion(testid, numberquestion);
+	}
+	
+	//get questions in a test user is attending
+	
+	@GetMapping(value = "/question/attending-test")
+	public List<QuestionEntity> getQuestionsInAttendingTest(@RequestParam("testid") Long testid, @RequestParam("userid") Long userid){
+		List<QuestionEntity> questions = questionService.getQuestionsInAttendingTest(testid, userid);
+		return questions;
 	}
 }

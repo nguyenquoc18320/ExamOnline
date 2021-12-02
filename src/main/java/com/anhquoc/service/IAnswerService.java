@@ -10,4 +10,7 @@ public interface IAnswerService {
 //	public AnswerEntity createAnswer(AnswerEntity answer);
 //	public AnswerEntity createAnswer(AnswerEntity answer);
 //	public List<AnswerEntity> getQuestionAnswerByTest(Long testid);
+	
+	public void answer(Long userid, Long questionid, String selection);
+	public List<AnswerEntity> getAnswersForAttendingTest(Long testid, Long userid);
 }

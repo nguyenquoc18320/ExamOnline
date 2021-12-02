@@ -11,5 +11,6 @@ public interface IQuestionService {
 	public QuestionEntity updateQuestion(QuestionEntity question);
 	public QuestionEntity deleteQuestion(Long testid, int numberquestion);
 	
+	public List<QuestionEntity> getQuestionsInAttendingTest(Long testid, Long userid);
 	
 }

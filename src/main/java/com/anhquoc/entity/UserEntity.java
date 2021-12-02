@@ -57,7 +57,14 @@ public class UserEntity extends BaseEntity {
 
 	@ManyToMany
 	@JoinTable(name = "Answer", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<QuestionEntity> questions = new ArrayList<>();
+	
+	@OneToMany(mappedBy="user",fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private List<TestUserEntity> testUser;
+	
+	
 
 	@Override
 	public int compareTo(UserEntity e) {
@@ -126,6 +133,22 @@ public class UserEntity extends BaseEntity {
 
 	public void setQuestions(List<QuestionEntity> questions) {
 		this.questions = questions;
+	}
+
+	public List<JoinCourse> getJoinList() {
+		return joinList;
+	}
+
+	public void setJoinList(List<JoinCourse> joinList) {
+		this.joinList = joinList;
+	}
+
+	public List<TestUserEntity> getTestUser() {
+		return testUser;
+	}
+
+	public void setTestUser(List<TestUserEntity> testUser) {
+		this.testUser = testUser;
 	}
 
 	

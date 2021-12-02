@@ -125,9 +125,9 @@ public class CourseService implements ICourseService {
 		}
 
 		// check whether the course belongs to the user
-		if (course.getUser().getId() != userid && user.getRole().getId() != 1) {
-			return null;
-		}
+//		if (course.getUser().getId() != userid && user.getRole().getId() != 1) {
+//			return null;
+//		}
 		return course;
 	}
 
