@@ -262,5 +262,22 @@ public class TestService implements ITestService{
 		return null;
 	}
 	
+	@Override
+	public TestEntity statusTest(Long courseid, Long testid) {
+		CourseEntity course = courseRepository.findOneById(courseid);		
+		if ( course ==null) {
+			return null;
+		}
+		TestEntity test = testRepository.findOneById(testid);
+		
+		
+		if(test.isStatus()== true) {
+			test.setStatus(false);
+		}else {
+			test.setStatus(true);
+		}
+		testRepository.save(test);
+		return test;
+	}
 	
 }

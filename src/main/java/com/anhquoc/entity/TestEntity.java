@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.util.Date;
 @Entity
 @Table(name="test")
 public class TestEntity extends BaseEntity{
@@ -26,6 +26,12 @@ public class TestEntity extends BaseEntity{
 	@Column(name = "duration")
 	private int duration;
 	
+	@Column(name = "start")
+	private Date start;
+	
+	@Column(name = "end")
+	private Date end;
+	
 	@Column(name="status")
 	private boolean status;
 	
@@ -34,12 +40,6 @@ public class TestEntity extends BaseEntity{
 	
 	@Column(name = "deleted")
 	private boolean deleted;
-	
-	@Column(name="start")
-	private Date start;
-	
-	@Column(name="end")
-	private Date end;
 	
 	@ManyToOne
     @JoinColumn(name="courseid", nullable=false)
@@ -57,11 +57,13 @@ public class TestEntity extends BaseEntity{
     	
     }
 	
-	public TestEntity(String name, String description, int duration, boolean status, int attemptnumber, boolean deleted, CourseEntity course) {
+	public TestEntity(String name, String description, int duration, Date start, Date end, boolean status, int attemptnumber, boolean deleted, CourseEntity course) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.duration = duration;
+		this.start = start;
+		this.end = end;
 		this.status = status;
 		this.attemptnumber = attemptnumber;
 		this.deleted = deleted;
@@ -91,6 +93,22 @@ public class TestEntity extends BaseEntity{
 		this.duration = duration;
 	}
 	
+	public Date getStart() {
+		return start;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
+	}
+
 	public boolean isStatus() {
 		return status;
 	}
@@ -138,25 +156,5 @@ public class TestEntity extends BaseEntity{
 	public void setTestUser(List<TestUserEntity> testUser) {
 		this.testUser = testUser;
 	}
-
-	public Date getStart() {
-		return start;
-	}
-
-	public void setStart(Date start) {
-		this.start = start;
-	}
-
-	public Date getEnd() {
-		return end;
-	}
-
-	public void setEnd(Date end) {
-		this.end = end;
-	}
-
-	
-	
-	
 	
 }
