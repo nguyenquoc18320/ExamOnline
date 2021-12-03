@@ -100,4 +100,15 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long>{
 	public List<CourseEntity> findAllByUser(UserEntity user, Pageable pageable);
 	public List<CourseEntity> findAllByUser(UserEntity user);
 	public CourseEntity findOneById(Long id);
+	
+	/*
+	 * get public courses
+	 */
+	@Query(value = "SELECT c FROM CourseEntity c "
+			+ " WHERE c.user != ?1 AND c.blocked = False AND c.deleted = False AND c.name LIKE %?2% AND c.status = True ")
+	public List<CourseEntity> getPublicCourses(UserEntity user, String courseName, Pageable pageable);
+	
+	@Query(value = "SELECT c FROM CourseEntity c "
+			+ " WHERE c.user != ?1 AND c.blocked = False AND c.deleted = False AND c.name LIKE %?2% AND c.status = True ")
+	public List<CourseEntity> getPublicCourses(UserEntity user, String courseName);
 }

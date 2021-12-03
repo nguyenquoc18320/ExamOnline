@@ -38,4 +38,5 @@ public interface JoinCourseRepository extends JpaRepository<JoinCourse, UserJoin
 	//get a course a user joined	
 	@Query(value = "SELECT j.course FROM JoinCourse j WHERE j.id.userid = ?1 AND j.id.courseid=?2 AND j.status=True AND j.course.blocked = False")
 	CourseEntity getCourseByUser(Long userid, Long courseid);
+	
 }

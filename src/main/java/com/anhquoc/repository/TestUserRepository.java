@@ -34,4 +34,13 @@ public interface TestUserRepository extends JpaRepository<TestUserEntity, TestUs
 			+ "	WHERE tu.id.testid=?1 AND tu.id.userid=?2 AND tu.attempt>0 AND tu.score!=-1 "
 			+ " ORDER BY tu.attempt DESC ")
 	public List<TestUserEntity> getResults(Long testid, Long userid, Pageable pageble);
+	
+	//get userid attending test
+	@Query(value = "SELECT DISTINCT tu.id.userid FROM TestUserEntity tu "
+			+ " WHERE tu.id.testid=?1 AND tu.attempt>0 AND tu.score !=-1 ")
+	public List<Long> getUserIdAttendingTest(Long testid, Pageable pageable); 
+	
+	@Query(value = "SELECT DISTINCT tu.id.userid FROM TestUserEntity tu "
+			+ " WHERE tu.id.testid=?1 AND tu.attempt>0 AND tu.score !=-1 ")
+	public List<Long> getUserIdAttendingTest(Long testid); 
 }

@@ -14,4 +14,7 @@ public interface IJoinCourseService {
 	public String deleteUser(Long ownerid, Long userid, Long couresid);
 	public List<CourseEntity> getCoursesByUser(Long userid, Pageable pageable);
 	public List<CourseEntity> getCoursesByUser(Long userid);
+	
+	public boolean joinPublicCourse(Long userid, Long courseid);
+	public boolean checkJoinCourse(Long userid, Long courseid);
 }

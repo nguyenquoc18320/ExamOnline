@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.anhquoc.entity.CourseEntity;
 import com.anhquoc.entity.JoinCourse;
 import com.anhquoc.entity.UserEntity;
+import com.anhquoc.entity.UserJoinCourseKey;
 import com.anhquoc.repository.CourseRepository;
 import com.anhquoc.repository.JoinCourseRepository;
 import com.anhquoc.repository.UserRepository;
@@ -162,6 +163,47 @@ public class JoinCourseService implements IJoinCourseService {
 	}	
 	
 	
+	/*
+	 * a user join public course
+	 */
+	@Override
+	public boolean joinPublicCourse(Long userid, Long courseid) {
+		//check whether the course is public or not
+		UserEntity user = userRepository.findOneById(userid);
+		
+		CourseEntity course= courseRepository.findOneByIdAndBlockedAndDeleted(courseid, false, false);
+		
+		if(course.getStatus() == false)
+			return false;
+		
+		//check author
+		if(course.getUser().getId() == userid) {
+			return false;
+		}
+
+		UserJoinCourseKey key = new UserJoinCourseKey();
+		key.setCourseid(courseid);
+		key.setUserid(userid);
+		
+		JoinCourse join = new JoinCourse();
+		join.setId(key);
+		join.setCourse(course);
+		join.setUser(user);
+		join.setStatus(true);
+		
+		joinCourseRepository.save(join);
+		return true;
+	}
 	
+	/*
+	 * check joint course
+	 */
+	@Override
+	public boolean checkJoinCourse(Long userid, Long courseid) {
+		CourseEntity course = joinCourseRepository.getCourseByUser(userid, courseid);
+		if(course!=null)
+			return true;
+		return false;
+	}
 	
 }
