@@ -234,4 +234,25 @@ public class CourseAPI {
 		return courseService.getCourseByCourseId(courseid);
 	}
 	
+	
+	/*
+	 * get public coures for user in home page
+	 */
+	@GetMapping("/course/public-courses")
+	public OutPutPagination<CourseEntity> getPublicCourses(@RequestParam("userid") Long userid, 
+			@RequestParam(value="courseName", required = false, defaultValue = "") String courseName,
+			@RequestParam("page") int page, @RequestParam("limit") int limit){
+		
+		OutPutPagination<CourseEntity> output = new OutPutPagination<CourseEntity>();
+		output.setPage(page);
+		Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("name"));
+
+		List<CourseEntity> courses = new ArrayList<>();
+		
+		courses = courseService.getPublicCourses(userid, courseName, pageable);
+		output.setEntityList(courses);
+		
+		output.setTotalPage((int) Math.ceil((float) courseService.getPublicCourses(userid, courseName).size() / limit));
+		return output;
+	}
 }

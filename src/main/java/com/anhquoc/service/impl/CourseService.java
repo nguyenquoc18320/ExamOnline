@@ -397,4 +397,30 @@ public class CourseService implements ICourseService {
 		
 	}
 	
+	/*
+	 * get public course
+	 */
+	@Override
+	public List<CourseEntity> getPublicCourses(Long userid, String courseName, Pageable pageable) {
+		UserEntity user = userRepository.findOneById(userid);
+		List<CourseEntity> courseList= new ArrayList<CourseEntity>();
+		
+		if(user!=null) {
+		 courseList = courseRepository.getPublicCourses(user, courseName, pageable);
+		}
+				
+		return courseList;
+	}
+	
+	@Override
+	public List<CourseEntity> getPublicCourses(Long userid, String courseName) {
+		UserEntity user = userRepository.findOneById(userid);
+		List<CourseEntity> courseList= new ArrayList<CourseEntity>();
+		
+		if(user!=null) {
+		 courseList = courseRepository.getPublicCourses(user, courseName);
+		}
+				
+		return courseList;
+	}
 }

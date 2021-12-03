@@ -15,4 +15,8 @@ public interface ITestUserservice {
 	public TestUserEntity finishTest(Long testid, Long userid);
 	public List<TestUserEntity> getResults(Long testid, Long userid, Pageable pageable);
 	public List<TestUserEntity> getResults(Long testid, Long userid);
+	
+	public List<TestUserEntity> getResultsForAuthor(Long testid, Long authorid, Pageable pageable);
+	public List<TestUserEntity> getResultsForAuthor(Long testid, Long authorid);
+	
 }

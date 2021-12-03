@@ -76,4 +76,19 @@ public class TestUserAPI {
 		output.setTotalPage((int) Math.ceil((float) testUserService.getResults(testid, userid).size() / limit));
 		return output;
 	}
+	
+	@GetMapping(value = "/test/results-for-author")
+	public OutPutPagination<TestUserEntity> getResultsForAuthor(@RequestParam("authorid") Long authorid, @RequestParam("testid") Long testid,
+			@RequestParam("page") int page, @RequestParam("limit") int limit){
+		
+		OutPutPagination<TestUserEntity> output = new OutPutPagination<TestUserEntity>();
+		output.setPage(page);
+		Pageable pageable = PageRequest.of(page - 1, limit);
+		
+		List<TestUserEntity> result = testUserService.getResultsForAuthor(testid, authorid, pageable);
+
+		output.setEntityList(result);
+		output.setTotalPage((int) Math.ceil((float) testUserService.getResultsForAuthor(testid, authorid).size() / limit));
+		return output;
+	}
 }

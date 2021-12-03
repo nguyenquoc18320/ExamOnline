@@ -100,4 +100,22 @@ public class JoinCourseAPI {
 		output.setEntityList(courseList);
 		return output;
 	}
+	
+	/*
+	 * check join course
+	 */
+	@GetMapping(value="/course/check-join-course")
+	public boolean checkJoinCourse(@RequestParam("userid") Long userid, @RequestParam("courseid") Long courseid) {
+		boolean result = joinCourseService.checkJoinCourse(userid, courseid);
+		return result;
+	}
+	
+	/*
+	 * join public course
+	 */
+	@PutMapping(value="/course/join-public-course")
+	public boolean joinPublicCourse(@RequestParam("userid") Long userid, @RequestParam("courseid") Long courseid) {
+		boolean result = joinCourseService.joinPublicCourse(userid, courseid);
+		return result;
+	}
 }

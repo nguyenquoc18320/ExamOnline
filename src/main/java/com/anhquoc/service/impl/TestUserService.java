@@ -208,27 +208,58 @@ public class TestUserService implements ITestUserservice {
 		if (now.before(testUser.getEndTime())) {
 			testUser.setEndTime(Calendar.getInstance().getTime());
 		}
-		
+
 		testUserRepository.save(testUser);
 
 		return testUser;
 	}
-	
+
 	/*
-	 * get results 
+	 * get results
 	 */
 	@Override
 	public List<TestUserEntity> getResults(Long testid, Long userid, Pageable pageable) {
-		//check for finish test
+		// check for finish test
 		getContinuingTestUser(testid, userid);
-		
+
 		List<TestUserEntity> results = testUserRepository.getResults(testid, userid, pageable);
 		return results;
 	}
-	
+
 	@Override
 	public List<TestUserEntity> getResults(Long testid, Long userid) {
 		List<TestUserEntity> results = testUserRepository.getTestUser(testid, userid);
 		return results;
+	}
+
+	/*
+	 * get results for test of author
+	 */
+	@Override
+	public List<TestUserEntity> getResultsForAuthor(Long testid, Long authorid, Pageable pageable) {
+		List<Long> userid = testUserRepository.getUserIdAttendingTest(testid, pageable);
+
+		List<TestUserEntity> testUsers = new ArrayList<TestUserEntity>();
+		for (Long id : userid) {
+			// finish test (by using continuing test
+			getContinuingTestUser(testid, id);
+			testUsers.add(this.getBestResult(testid, id));
+		}
+
+		return testUsers;
+	}
+
+	@Override
+	public List<TestUserEntity> getResultsForAuthor(Long testid, Long authorid) {
+		List<Long> userid = testUserRepository.getUserIdAttendingTest(testid);
+
+		List<TestUserEntity> testUsers = new ArrayList<TestUserEntity>();
+		for (Long id : userid) {
+			// finish test (by using continuing test
+			getContinuingTestUser(testid, id);
+			testUsers.add(this.getBestResult(testid, id));
+		}
+
+		return testUsers;
 	}
 }
