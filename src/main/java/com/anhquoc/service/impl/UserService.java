@@ -63,10 +63,14 @@ public class UserService implements IUserService {
 			return null;
 		
 		//to update
+//		user.setName(user.getName());
+//		user.setGender(user.getGender());
+//		user.setDateOfBirth(user.getDateOfBirth());
+//		if(user.getImage() != null) {
+//			user.setImage(user.getImage());
+//		}
 		user = userRepository.save(user);
-		
-//		account.setUser(user);
-//		account = accountRepository.save(account);
+//		UserEntity usercurrent = userRepository.findOneById(user.getId());
 		return user;
 	}
 	

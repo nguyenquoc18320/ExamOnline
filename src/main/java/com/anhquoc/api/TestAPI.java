@@ -155,5 +155,9 @@ public class TestAPI {
 		TestEntity test = testService.getTestUserAttending(testid, userid);
 		return test;
 	}
+	@PutMapping("/change-status-test/{courseid}/{testid}")
+	public TestEntity statusTest(@PathVariable("courseid") Long courseid, @PathVariable("testid") Long testid) {
+		return testService.statusTest(courseid, testid);
+	}
 	
 }
