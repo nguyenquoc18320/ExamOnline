@@ -255,4 +255,13 @@ public class CourseAPI {
 		output.setTotalPage((int) Math.ceil((float) courseService.getPublicCourses(userid, courseName).size() / limit));
 		return output;
 	}
+	
+	/*
+	 * get course for admin
+	 */
+	@GetMapping("/admin")
+	public CourseEntity getCourseForAdmin(@RequestParam("courseid") Long courseid) {
+		CourseEntity course = courseService.getCourseForAdmin(courseid);		
+		return course;
+	}
 }

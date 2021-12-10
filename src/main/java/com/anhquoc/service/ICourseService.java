@@ -41,4 +41,10 @@ public interface ICourseService {
 	 */
 	public List<CourseEntity> getPublicCourses(Long userid, String courseName, Pageable pageable);
 	public List<CourseEntity> getPublicCourses(Long userid, String courseName);
+	
+	/*
+	 * get course for admin
+	 */
+	public CourseEntity getCourseForAdmin(Long courseid);
 }
+

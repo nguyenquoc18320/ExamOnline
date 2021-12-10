@@ -291,4 +291,56 @@ public class TestService implements ITestService{
 		return tests;
 	}
 	
+	
+	/*
+	 * get test for admin
+	 */
+	@Override
+	public List<TestEntity> getTests(Long courseid, Pageable pageable) {
+		List<TestEntity> list = new ArrayList<TestEntity>();
+		//check whether the course exists or not
+		CourseEntity course = courseRepository.findOneById(courseid);
+		if(course.getDeleted()) {
+			return list;
+		}
+		
+		list = testRepository.findTestsByCourse(course, pageable);
+		return list;
+	}
+	
+	@Override
+	public List<TestEntity> getTests(Long courseid) {
+		List<TestEntity> list = new ArrayList<TestEntity>();
+		//check whether the course exists or not
+		CourseEntity course = courseRepository.findOneById(courseid);
+		if(course.getDeleted()) {
+			return list;
+		}
+		
+		list = testRepository.findTestsByCourse(course);
+		return list;
+	}
+	
+	/*
+	 * get test for admin
+	 */
+	@Override
+	public TestEntity getTestForAdmin(Long testid) {
+		TestEntity test = testRepository.getTestNotDeleted(testid);
+		return test;
+	}
+	
+	//get statistic for all score
+	@Override
+	public List<Integer> getAllScoreStatistic(Long testid) {
+		List<Integer> result = new ArrayList<Integer>();
+		
+		int score = 0;
+		for(int i=0; i<10; i++) {
+			score  = testUserRepository.getStatisticForCourse(testid, i, i+1);
+			result.add(score);
+		}
+		return result;
+	}
+	
 }

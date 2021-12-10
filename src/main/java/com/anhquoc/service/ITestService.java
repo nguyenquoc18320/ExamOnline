@@ -41,4 +41,13 @@ public interface ITestService {
 	public TestEntity statusTest(Long courseid, Long testid);
 	
 	public List<TestEntity> getTestByCourseId(Long courseid);
+	//get test
+	public List<TestEntity> getTests(Long courseid, Pageable pageable);
+	public List<TestEntity> getTests(Long courseid);
+	
+	//get test for admin
+	public TestEntity getTestForAdmin(Long testid);
+	
+	// get statistic for all score
+	public List<Integer> getAllScoreStatistic(Long testid);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -39,4 +40,5 @@ public interface JoinCourseRepository extends JpaRepository<JoinCourse, UserJoin
 	@Query(value = "SELECT j.course FROM JoinCourse j WHERE j.id.userid = ?1 AND j.id.courseid=?2 AND j.status=True AND j.course.blocked = False")
 	CourseEntity getCourseByUser(Long userid, Long courseid);
 	
+
 }

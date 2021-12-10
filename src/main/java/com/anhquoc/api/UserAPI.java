@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anhquoc.entity.AccountEntity;
@@ -100,4 +101,12 @@ public class UserAPI {
 		return userService.getListUserbySearch(search);
 	}
 
+	
+	//get user by id
+	@GetMapping(value = "/user")
+	public UserEntity getUserById(@RequestParam("userid") Long userid) {
+		UserEntity user = userService.findUserById(userid);
+		return user;
+				
+	}
 }
