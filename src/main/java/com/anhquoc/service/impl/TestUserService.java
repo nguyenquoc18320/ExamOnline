@@ -262,4 +262,9 @@ public class TestUserService implements ITestUserservice {
 
 		return testUsers;
 	}
+	@Override
+	public List<TestUserEntity> getResultsByTestId(Long testid) {
+		List<TestUserEntity> results = testUserRepository.getTestResultbyTestid(testid);
+		return results;
+	}
 }

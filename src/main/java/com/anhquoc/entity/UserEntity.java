@@ -41,6 +41,9 @@ public class UserEntity extends BaseEntity {
 	
 	@Column(name = "image")
 	private String image;
+	
+	@Column(name="status")
+	private boolean status;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -149,6 +152,14 @@ public class UserEntity extends BaseEntity {
 
 	public void setTestUser(List<TestUserEntity> testUser) {
 		this.testUser = testUser;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	
