@@ -43,4 +43,8 @@ public interface TestUserRepository extends JpaRepository<TestUserEntity, TestUs
 	@Query(value = "SELECT DISTINCT tu.id.userid FROM TestUserEntity tu "
 			+ " WHERE tu.id.testid=?1 AND tu.attempt>0 AND tu.score !=-1 ")
 	public List<Long> getUserIdAttendingTest(Long testid); 
+	//get test result
+	@Query(value = "SELECT t FROM TestUserEntity t "
+			+ " WHERE t.id.testid=?1 AND t.attempt>0 AND t.score!=-1")
+	public List<TestUserEntity> getTestResultbyTestid(Long testid);
 }

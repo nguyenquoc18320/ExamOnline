@@ -159,5 +159,10 @@ public class TestAPI {
 	public TestEntity statusTest(@PathVariable("courseid") Long courseid, @PathVariable("testid") Long testid) {
 		return testService.statusTest(courseid, testid);
 	}
+	@GetMapping("/test-by-course/{courseid}")
+	public List<TestEntity> getCourseByUser(@PathVariable("courseid") Long courseid){
+		return testService.getTestByCourseId(courseid);
+	}
+	
 	
 }

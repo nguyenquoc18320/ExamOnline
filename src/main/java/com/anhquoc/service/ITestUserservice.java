@@ -19,4 +19,5 @@ public interface ITestUserservice {
 	public List<TestUserEntity> getResultsForAuthor(Long testid, Long authorid, Pageable pageable);
 	public List<TestUserEntity> getResultsForAuthor(Long testid, Long authorid);
 	
+	public List<TestUserEntity> getResultsByTestId(Long testid);
 }

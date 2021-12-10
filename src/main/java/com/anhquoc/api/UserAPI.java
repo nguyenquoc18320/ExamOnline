@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anhquoc.entity.AccountEntity;
+import com.anhquoc.entity.CourseEntity;
+import com.anhquoc.entity.TestEntity;
 import com.anhquoc.entity.UserEntity;
 import com.anhquoc.service.impl.AccountService;
 import com.anhquoc.service.impl.TemporaryStorageService;
@@ -77,5 +79,25 @@ public class UserAPI {
 	public AccountEntity changePassword(@RequestBody AccountEntity account, @PathVariable("email") String email) {
 		return userService.changePassword(account,email);
 	}
-	
+	@GetMapping("/listuser")
+	public List<UserEntity> getListUser(){
+		return userService.getListUser();
+	}
+	@GetMapping("/listuser/{type}")
+	public List<UserEntity> getListUserbyType(@PathVariable("type") Long type){
+		return userService.getListUserbyType(type);
+	}
+	@GetMapping("/listuser/{type}/{status}")
+	public List<UserEntity> getListUserbyTypeandStatus(@PathVariable("type") Long type, @PathVariable("status") boolean status){
+		return userService.getListUserbyTypeandStatus(type, status);
+	}
+	@PutMapping("/change-status-user/{userid}")
+	public UserEntity statusUser(@PathVariable("userid") Long userid) {
+		return userService.statusUser(userid);
+	}
+	@GetMapping("/listuser-search/{search}")
+	public List<UserEntity> getListUserbySearch(@PathVariable("search") String search){
+		return userService.getListUserbySearch(search);
+	}
+
 }

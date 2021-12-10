@@ -8,7 +8,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.anhquoc.entity.AccountEntity;
+import com.anhquoc.entity.CourseEntity;
 import com.anhquoc.entity.TemporaryStorage;
+import com.anhquoc.entity.TestEntity;
 import com.anhquoc.entity.UserEntity;
 import com.anhquoc.repository.AccountRepository;
 import com.anhquoc.repository.TemporaryStorageRepository;
@@ -112,5 +114,50 @@ public class UserService implements IUserService {
 ////		System.out.println(account.getUser().getId());
 //		return user;
 //	}
+	
+	@Override
+	public List<UserEntity> getListUser() {
+
+		List<UserEntity> users = userRepository.findAll();
+		return users;
+	}
+	
+	@Override
+	public List<UserEntity> getListUserbyType(Long type) {
+
+		List<UserEntity> users = userRepository.findAllbyType(type);
+		return users;
+	}
+	@Override
+	public List<UserEntity> getListUserbyTypeandStatus(Long type, boolean status) {
+		if(type == 0) {
+			List<UserEntity> users = userRepository.findAllbyTypeStatus2(status);
+			return users;
+		}else {
+			List<UserEntity> users = userRepository.findAllbyTypeStatus(type, status);
+			return users;
+		}
+	}
+	@Override
+	public UserEntity statusUser(Long userid) {
+		
+		UserEntity user = userRepository.findOneById(userid);
+
+		if(user.isStatus()== true) {
+			user.setStatus(false);
+		}else {
+			user.setStatus(true);
+		}
+		userRepository.save(user);
+		return user;
+	}
+	
+	@Override
+	public List<UserEntity> getListUserbySearch(String search) {
+		
+			List<UserEntity> users = userRepository.findAllbySearch(search);
+			return users;
+		}
+	
 
 }
