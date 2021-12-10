@@ -34,4 +34,9 @@ public interface TestUserRepository extends JpaRepository<TestUserEntity, TestUs
 			+ "	WHERE tu.id.testid=?1 AND tu.id.userid=?2 AND tu.attempt>0 AND tu.score!=-1 "
 			+ " ORDER BY tu.attempt DESC ")
 	public List<TestUserEntity> getResults(Long testid, Long userid, Pageable pageble);
+	
+	//get test result
+	@Query(value = "SELECT t FROM TestUserEntity t "
+			+ " WHERE t.id.testid=?1 AND t.attempt>0 AND t.score!=-1")
+	public List<TestUserEntity> getTestResultbyTestid(Long testid);
 }

@@ -39,4 +39,6 @@ public interface ITestService {
 	public TestEntity getTestUserAttending(Long testid, Long userid);
 	
 	public TestEntity statusTest(Long courseid, Long testid);
+	
+	public List<TestEntity> getTestByCourseId(Long courseid);
 }

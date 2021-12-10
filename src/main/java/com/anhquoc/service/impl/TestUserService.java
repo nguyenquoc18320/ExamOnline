@@ -231,4 +231,9 @@ public class TestUserService implements ITestUserservice {
 		List<TestUserEntity> results = testUserRepository.getTestUser(testid, userid);
 		return results;
 	}
+	@Override
+	public List<TestUserEntity> getResultsByTestId(Long testid) {
+		List<TestUserEntity> results = testUserRepository.getTestResultbyTestid(testid);
+		return results;
+	}
 }

@@ -19,4 +19,20 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>{
 //	
 //    @Query(value= "SELECT * FROM user WHERE name = :name", nativeQuery = true)
 //    List<UserEntity> findUserByName(@Param("name") String name);
+	@Query(value = "SELECT u FROM UserEntity u "
+			+ " WHERE u.role.id = ?1")
+	public List<UserEntity> findAllbyType(Long type);
+	
+	@Query(value = "SELECT u FROM UserEntity u "
+			+ " WHERE u.role.id = ?1 AND u.status = ?2")
+	public List<UserEntity> findAllbyTypeStatus(Long type, boolean status);
+	
+	@Query(value = "SELECT u FROM UserEntity u "
+			+ " WHERE u.status = ?1")
+	public List<UserEntity> findAllbyTypeStatus2( boolean status);
+	
+	@Query(value = "SELECT u FROM UserEntity u "
+			+ " WHERE u.name LIKE %?1%")
+	public List<UserEntity> findAllbySearch( String search);
+	
 }

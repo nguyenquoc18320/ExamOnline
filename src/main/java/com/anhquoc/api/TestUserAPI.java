@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.anhquoc.entity.CourseEntity;
 import com.anhquoc.entity.TestEntity;
 import com.anhquoc.entity.TestUserEntity;
 import com.anhquoc.service.impl.TestUserService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @CrossOrigin
 @RestController
@@ -75,5 +77,12 @@ public class TestUserAPI {
 		output.setEntityList(result);
 		output.setTotalPage((int) Math.ceil((float) testUserService.getResults(testid, userid).size() / limit));
 		return output;
+	}
+	
+	@GetMapping(value = "/test-result/{testid}")
+//	@JsonIgnoreProperties(ignoreUnknown = true)
+	public List<TestUserEntity> getResultsByTestId(@PathVariable("testid") Long testid) {
+		return testUserService.getResultsByTestId(testid);
+	
 	}
 }

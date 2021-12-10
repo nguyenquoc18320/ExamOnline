@@ -280,4 +280,15 @@ public class TestService implements ITestService{
 		return test;
 	}
 	
+	@Override
+	public List<TestEntity> getTestByCourseId(Long courseid) {
+		CourseEntity course = courseRepository.findOneById(courseid);
+		if (course == null) {
+			return null;
+		}
+		
+		List<TestEntity> tests = testRepository.findTestsByCourse(course);
+		return tests;
+	}
+	
 }

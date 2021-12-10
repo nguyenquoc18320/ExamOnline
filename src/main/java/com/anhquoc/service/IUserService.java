@@ -17,4 +17,9 @@ public interface IUserService {
 //	public UserEntity createUser(UserEntity user, AccountEntity account);
 	public UserEntity updateUser(UserEntity user);
 	public AccountEntity changePassword(AccountEntity account, String email);
+	public List<UserEntity> getListUser();
+	public List<UserEntity> getListUserbyType(Long type);
+	public List<UserEntity> getListUserbyTypeandStatus(Long type, boolean status);
+	public UserEntity statusUser(Long userid);
+	public List<UserEntity> getListUserbySearch(String search);
 }
