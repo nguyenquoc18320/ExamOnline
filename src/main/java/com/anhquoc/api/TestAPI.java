@@ -63,6 +63,31 @@ public class TestAPI {
 	}
 	
 	/*
+	 * get test for admin
+	 */
+	@GetMapping(value = "/test/list")
+	public OutPutPagination<TestEntity> getTestsOfJoinedCourse( @RequestParam("courseid") Long courseid,
+			@RequestParam("page") int page, @RequestParam("limit") int limit){
+		
+		OutPutPagination<TestEntity> output = new OutPutPagination<TestEntity>();
+		output.setPage(page);
+		
+		Pageable pageble = PageRequest.of(page-1, limit);
+		
+		List<TestEntity> tests = new ArrayList<TestEntity>();
+		try {
+			tests = testService.getTests(courseid, pageble);
+			output.setTotalPage((int) Math.ceil((float) testService.getTests(courseid).size() / limit));
+		}catch (Exception e) {
+			
+		}
+		
+		output.setEntityList(tests);
+		return output;
+	}
+	
+	
+	/*
 	 * get tests of a course which a user joined
 	 */
 	@GetMapping(value = "/test/joined")
@@ -164,5 +189,24 @@ public class TestAPI {
 		return testService.getTestByCourseId(courseid);
 	}
 	
+	
+	/*
+	 * get test for admin
+	 */
+	@GetMapping(value="/test/admin")
+	public TestEntity getTestForAdmin(@RequestParam("testid") Long testid) {
+		TestEntity test = testService.getTestForAdmin(testid);				
+		return test;
+	}
+	
+	/*
+	 * get statistic for 0 - 10 score
+	 */
+	@GetMapping(value = "/test/statistic")
+	public List<Integer> getAllStatistic(@RequestParam("testid") Long testid){
+		List<Integer> result= testService.getAllScoreStatistic(testid);
+				
+		return result;
+	}
 	
 }

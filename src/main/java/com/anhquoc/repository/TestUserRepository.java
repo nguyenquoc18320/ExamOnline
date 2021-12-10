@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.anhquoc.entity.CourseEntity;
 import com.anhquoc.entity.TestUserEntity;
@@ -47,4 +50,19 @@ public interface TestUserRepository extends JpaRepository<TestUserEntity, TestUs
 	@Query(value = "SELECT t FROM TestUserEntity t "
 			+ " WHERE t.id.testid=?1 AND t.attempt>0 AND t.score!=-1")
 	public List<TestUserEntity> getTestResultbyTestid(Long testid);
+	
+	//set all attempt to zero
+//	@Transactional
+	@Modifying
+	@Query(value = "UPDATE TestUserEntity t SET t.attempt=0 WHERE t.id.userid=?1 "
+			+ " AND t.id.testid IN (SELECT c.id FROM TestEntity c WHERE c.course.id = ?2 )")
+	@Transactional(rollbackFor=Exception.class)
+	public void setAttemptsToZero(Long userid, Long courseid);
+	
+	//statistic score, min< and <=max
+	@Query(value="SELECT COUNT(*) "
+			+ " FROM test_user t inner join (SELECT userid, MAX(score) as score FROM test_user WHERE testid= :testid GROUP by userid ) Q ON t.userid = Q.userid"
+			+ " WHERE t.testid=:testid AND t.score=Q.score AND t.attempt>0 AND t.score>:min_score AND t.score<=:max_score",
+			nativeQuery = true)
+	public int getStatisticForCourse(@Param("testid") Long testid, @Param("min_score") float minScore, @Param("max_score") float maxScore);
 }

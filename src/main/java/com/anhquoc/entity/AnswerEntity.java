@@ -9,11 +9,14 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name="answer")
 public class AnswerEntity{
 	
 	@EmbeddedId
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UserQuestionEmbeddable id;
 
     @ManyToOne
@@ -22,8 +25,8 @@ public class AnswerEntity{
     private UserEntity user;
 
     @ManyToOne
-    @MapsId("user_id")
-    @JoinColumn(name = "user_id")
+    @MapsId("question_id")
+    @JoinColumn(name = "question_id")
     private QuestionEntity question;
 	
 	

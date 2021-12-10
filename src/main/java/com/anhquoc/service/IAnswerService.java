@@ -13,4 +13,5 @@ public interface IAnswerService {
 	
 	public void answer(Long userid, Long questionid, String selection);
 	public List<AnswerEntity> getAnswersForAttendingTest(Long testid, Long userid);
+	public List<AnswerEntity> getAnswerForTest(Long userid, Long testid, int attempt);
 }

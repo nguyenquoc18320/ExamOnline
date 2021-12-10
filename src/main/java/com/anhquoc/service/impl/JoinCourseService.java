@@ -11,8 +11,10 @@ import com.anhquoc.entity.CourseEntity;
 import com.anhquoc.entity.JoinCourse;
 import com.anhquoc.entity.UserEntity;
 import com.anhquoc.entity.UserJoinCourseKey;
+import com.anhquoc.repository.AnswerRepository;
 import com.anhquoc.repository.CourseRepository;
 import com.anhquoc.repository.JoinCourseRepository;
+import com.anhquoc.repository.TestUserRepository;
 import com.anhquoc.repository.UserRepository;
 import com.anhquoc.service.IJoinCourseService;
 
@@ -26,6 +28,12 @@ public class JoinCourseService implements IJoinCourseService {
 
 	@Autowired
 	JoinCourseRepository joinCourseRepository;
+	
+	@Autowired
+	TestUserRepository testUserRepository;
+	
+	@Autowired 
+	AnswerRepository answerRepository;
 
 	/*
 	 * users join a course
@@ -139,6 +147,11 @@ public class JoinCourseService implements IJoinCourseService {
 		if(course.getUser().getId() != ownerid) {
 			return "Cann't delete the user";
 		}
+		
+		//set all attempts to 0
+		testUserRepository.setAttemptsToZero(userid, couresid);
+		//set all attempts in answer to zeros
+		answerRepository.setAttemptsToZero(userid, couresid);
 		
 		JoinCourse joinCourse = new JoinCourse(user, course, false);
 		joinCourseRepository.save(joinCourse);

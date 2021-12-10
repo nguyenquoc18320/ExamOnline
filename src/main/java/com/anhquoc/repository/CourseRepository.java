@@ -111,4 +111,9 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long>{
 	@Query(value = "SELECT c FROM CourseEntity c "
 			+ " WHERE c.user != ?1 AND c.blocked = False AND c.deleted = False AND c.name LIKE %?2% AND c.status = True ")
 	public List<CourseEntity> getPublicCourses(UserEntity user, String courseName);
+	
+	//get course for admin
+	@Query(value = "SELECT c FROM CourseEntity c "
+			+ " WHERE c.id=?1 AND c.deleted = False ")
+	public CourseEntity getCourseNotDeleteForAdmin(Long courseid);
 }

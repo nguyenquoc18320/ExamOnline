@@ -423,4 +423,14 @@ public class CourseService implements ICourseService {
 				
 		return courseList;
 	}
+	
+	/*
+	 * get course for admin
+	 * not consider block status
+	 */
+	@Override
+	public CourseEntity getCourseForAdmin(Long courseid) {
+		CourseEntity course = courseRepository.getCourseNotDeleteForAdmin(courseid);
+		return course;
+	}
 }

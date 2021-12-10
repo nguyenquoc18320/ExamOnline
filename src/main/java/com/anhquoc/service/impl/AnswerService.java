@@ -114,4 +114,21 @@ public class AnswerService implements IAnswerService {
 		
 		return answers;
 	}
+	
+	/*
+	 * get answer for a test user done
+	 */
+	@Override
+	public List<AnswerEntity> getAnswerForTest(Long userid, Long testid, int attempt) {
+		List<AnswerEntity> answers = new ArrayList<AnswerEntity>();
+		//check to make sure no test happening
+		TestUserEntity testUser = testUserService.getContinuingTestUser(testid, userid);
+		if(testUser!=null) {
+			return answers;
+		}
+		
+		//get answers
+		answers = answerRepository.getAnswerForTest(userid, testid, attempt);
+		return answers;		
+	}
 }
