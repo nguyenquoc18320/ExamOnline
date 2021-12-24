@@ -1,8 +1,14 @@
 package com.anhquoc.api;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -93,6 +99,19 @@ public class TestUserAPI {
 		output.setTotalPage((int) Math.ceil((float) testUserService.getResultsForAuthor(testid, authorid).size() / limit));
 		return output;
 	}
+	
+	/*
+	 * export exel file for results
+	 */
+	@GetMapping(value="/test-result/export")
+	public void getResulExelFile(@RequestParam("authorid") Long authorid, @RequestParam("testid") Long testid, HttpServletResponse response) throws IOException {
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment; filename=result.xls");
+		ByteArrayInputStream inputStream = testUserService.getResultExcelFile(testid, authorid);
+		IOUtils.copy(inputStream, response.getOutputStream());
+
+	}
+	
 	@GetMapping(value = "/test-result/{testid}")
 //	@JsonIgnoreProperties(ignoreUnknown = true)
 	public List<TestUserEntity> getResultsByTestId(@PathVariable("testid") Long testid) {

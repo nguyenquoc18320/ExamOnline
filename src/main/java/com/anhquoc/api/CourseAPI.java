@@ -1,8 +1,11 @@
 package com.anhquoc.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.anhquoc.api.pagination.OutPutPagination;
 import com.anhquoc.entity.CourseEntity;
+import com.anhquoc.repository.CourseRepository;
+import com.anhquoc.repository.TestRepository;
+import com.anhquoc.repository.UserRepository;
 import com.anhquoc.service.impl.CourseService;
 
 @CrossOrigin
@@ -26,12 +32,20 @@ public class CourseAPI {
 	@Autowired
 	private CourseService courseService;
 
-	
 	@PostMapping("/course")
 	public CourseEntity createCourse(@RequestBody CourseEntity course) {
 		course = courseService.createCourse(course);
 		return course;
 	}
+
+	@Autowired
+	private CourseRepository courseRepository;
+
+	@Autowired
+	private TestRepository testRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	/*
 	 * Get list of courses of a user to use for pagination
@@ -70,30 +84,33 @@ public class CourseAPI {
 		try {
 			// get with status and blocked
 			if (!status.isEmpty() && !blocked.isEmpty()) {
-				
+
 				courses = courseService.getCoursesOfUser(userid, courseName, Boolean.parseBoolean(status),
 						Boolean.parseBoolean(blocked), pageable);
 				output.setTotalPage((int) Math.ceil((float) courseService.getCoursesOfUser(userid, courseName,
 						Boolean.parseBoolean(status), Boolean.parseBoolean(blocked)).size() / limit));
-				
+
 			} else if (!status.isEmpty()) {// with status
-				
-				courses = courseService.getCoursesOfUserWithStatus(userid, courseName, Boolean.parseBoolean(status), pageable);
-				output.setTotalPage((int) Math.ceil((float) courseService.getCoursesOfUserWithStatus(userid, courseName,
-						Boolean.parseBoolean(status)).size() / limit));
-				
+
+				courses = courseService.getCoursesOfUserWithStatus(userid, courseName, Boolean.parseBoolean(status),
+						pageable);
+				output.setTotalPage((int) Math.ceil((float) courseService
+						.getCoursesOfUserWithStatus(userid, courseName, Boolean.parseBoolean(status)).size() / limit));
+
 			} else if (!blocked.isEmpty()) {// with blocked
 
-				courses = courseService.getCoursesOfUserWithBlocked(userid, courseName, Boolean.parseBoolean(blocked), pageable);
-				output.setTotalPage((int) Math.ceil((float) courseService.getCoursesOfUserWithBlocked(userid, courseName,
-						Boolean.parseBoolean(blocked)).size() / limit));
-				
+				courses = courseService.getCoursesOfUserWithBlocked(userid, courseName, Boolean.parseBoolean(blocked),
+						pageable);
+				output.setTotalPage((int) Math.ceil((float) courseService
+						.getCoursesOfUserWithBlocked(userid, courseName, Boolean.parseBoolean(blocked)).size()
+						/ limit));
+
 			} else {
-				
+
 				courses = courseService.getCoursesOfUser(userid, courseName, pageable);
 				output.setTotalPage(
 						(int) Math.ceil((float) courseService.getCoursesOfUser(userid, courseName).size() / limit));
-				
+
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -104,7 +121,6 @@ public class CourseAPI {
 		return output;
 	}
 
-	
 	/*
 	 * Get list of courses of a user to use for pagination
 	 */
@@ -118,14 +134,13 @@ public class CourseAPI {
 ////		System.out.println((int)Math.ceil((float)courseService.totalCourseOfUser(userid)/limit));
 //		return output;
 //	}
-	
+
 	@GetMapping("/course")
 	public CourseEntity getCourse(@RequestParam("userid") Long userid, @RequestParam("courseid") Long courseid) {
 		CourseEntity course = courseService.getCourse(userid, courseid);
 		return course;
 	}
 
-	
 	/*
 	 * Update course info
 	 */
@@ -137,7 +152,7 @@ public class CourseAPI {
 
 	/*
 	 * get courses with multiple conditions to filter, this function is used for
-	 * admin conditions: userid, course name, author's name, status, blocked status
+	 * admin, conditions: userid, course name, author's name, status, blocked status
 	 */
 	@GetMapping("/admin/course")
 	public OutPutPagination<CourseEntity> getCourseWithAdminRole(
@@ -189,7 +204,6 @@ public class CourseAPI {
 		return output;
 	}
 
-	
 	/*
 	 * delete a course userid: person requires to delete the course
 	 */
@@ -200,7 +214,7 @@ public class CourseAPI {
 
 		return result;
 	}
-	
+
 	/*
 	 * block a course userid: person requires to delete the course
 	 */
@@ -211,7 +225,7 @@ public class CourseAPI {
 
 		return result;
 	}
-	
+
 	/*
 	 * block a course userid: person requires to delete the course
 	 */
@@ -223,45 +237,98 @@ public class CourseAPI {
 		return result;
 	}
 
-	
 	@GetMapping("/course-by-user/{userid}")
-	public List<CourseEntity> getCourseByUser(@PathVariable("userid") Long userid){
+	public List<CourseEntity> getCourseByUser(@PathVariable("userid") Long userid) {
 		return courseService.getCourseByUserId(userid);
 	}
-	
+
 	@GetMapping("/course/{courseid}")
-	public CourseEntity getCourseByCourseID(@PathVariable("courseid") Long courseid){		
+	public CourseEntity getCourseByCourseID(@PathVariable("courseid") Long courseid) {
 		return courseService.getCourseByCourseId(courseid);
 	}
-	
-	
+
 	/*
-	 * get public coures for user in home page
+	 * get public courses for users in home page
 	 */
 	@GetMapping("/course/public-courses")
-	public OutPutPagination<CourseEntity> getPublicCourses(@RequestParam("userid") Long userid, 
-			@RequestParam(value="courseName", required = false, defaultValue = "") String courseName,
-			@RequestParam("page") int page, @RequestParam("limit") int limit){
-		
+	public OutPutPagination<CourseEntity> getPublicCourses(@RequestParam("userid") Long userid,
+			@RequestParam(value = "courseName", required = false, defaultValue = "") String courseName,
+			@RequestParam(value = "authorid", required = false, defaultValue = "") String authorid,
+			@RequestParam("page") int page, @RequestParam("limit") int limit) {
+
 		OutPutPagination<CourseEntity> output = new OutPutPagination<CourseEntity>();
 		output.setPage(page);
 		Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("name"));
 
 		List<CourseEntity> courses = new ArrayList<>();
-		
-		courses = courseService.getPublicCourses(userid, courseName, pageable);
+
+		// get courses of author for other users
+		if (!authorid.isEmpty()) {
+			try {
+				Long author = Long.parseLong(authorid);
+				courses = courseService.getPublicCoursesOfAuthorid(userid, courseName, author, pageable);
+				output.setTotalPage((int) Math.ceil(
+						(float) courseService.getPublicCoursesOfAuthorid(userid, courseName, author).size() / limit));
+			} catch (Exception ex) {
+
+			}
+		} else {
+			courses = courseService.getPublicCourses(userid, courseName, pageable);
+			output.setTotalPage(
+					(int) Math.ceil((float) courseService.getPublicCourses(userid, courseName).size() / limit));
+		}
 		output.setEntityList(courses);
-		
-		output.setTotalPage((int) Math.ceil((float) courseService.getPublicCourses(userid, courseName).size() / limit));
 		return output;
 	}
-	
+
 	/*
 	 * get course for admin
 	 */
 	@GetMapping("/admin")
 	public CourseEntity getCourseForAdmin(@RequestParam("courseid") Long courseid) {
-		CourseEntity course = courseService.getCourseForAdmin(courseid);		
+		CourseEntity course = courseService.getCourseForAdmin(courseid);
 		return course;
 	}
+
+	/*
+	 * dashboard
+	 */
+	@GetMapping("/dashboard")
+	public Map<String, String> dashboard() {
+		HashMap<String, String> map = new HashMap<>();
+		
+		JSONObject json = new JSONObject();
+		// get total courses
+		map.put("totalCourses", String.valueOf(courseRepository.getTotalCourses()));
+
+		// get total public courses
+		map.put("totalPublicCourses", String.valueOf(courseRepository.getTotalPublicCourses()));
+
+		// get total private courses
+		map.put("totalPrivateCourses", String.valueOf(courseRepository.getTotalPrivateCourses()));
+
+		// get total private courses
+		map.put("totalBlockedCourses", String.valueOf(courseRepository.getTotalBlockedCourses()));
+
+		// get total tests
+		map.put("totalTests", String.valueOf(testRepository.getTotalTests()));
+
+		// get total opening tests
+		map.put("totalOpenTests", String.valueOf(testRepository.getTotalOpenTests()));
+
+		// get total closed tests
+		map.put("totalClosedTests", String.valueOf(testRepository.getTotalClosedTests()));
+		
+		//get total users
+		map.put("totalUsers", String.valueOf(userRepository.getTotalUsers()));
+		
+		//get total active users
+		map.put("totalActiveUsers", String.valueOf(userRepository.getTotalActiveUsers()));
+		
+		//get total disable users
+		map.put("totalDisableUsers", String.valueOf(userRepository.getTotalDisableUsers()));
+		
+		return map;
+	}
+
 }

@@ -63,4 +63,20 @@ public interface TestRepository extends JpaRepository<TestEntity, Long>{
 			+ " WHERE t.id = ?1 AND t.deleted=False")
 	public TestEntity getTestNotDeleted(Long testid);
 	
+	//get total tests
+	@Query(value = "SELECT COUNT(t) FROM TestEntity t "
+			+ " WHERE t.deleted = False")
+	public int getTotalTests();
+	
+	//get total open tests
+	@Query(value = "SELECT COUNT(t) FROM TestEntity t "
+			+ " WHERE t.deleted = False AND t.status=True")
+	public int getTotalOpenTests();
+	
+	//get total closed tests
+	@Query(value = "SELECT COUNT(t) FROM TestEntity t "
+			+ " WHERE t.deleted = False AND t.status=False")
+	public int getTotalClosedTests();
+	
+	
 }

@@ -112,8 +112,40 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long>{
 			+ " WHERE c.user != ?1 AND c.blocked = False AND c.deleted = False AND c.name LIKE %?2% AND c.status = True ")
 	public List<CourseEntity> getPublicCourses(UserEntity user, String courseName);
 	
+	/*
+	 * get public courses of author
+	 */
+	@Query(value = "SELECt c FROM CourseEntity c "
+			+ " WHERE c.user!=?1 AND  c.blocked = False AND c.deleted = False AND c.name LIKE %?2% AND c.status = True AND c.user.id=?3")
+	public List<CourseEntity> getPublicCoursesOfAuthor(UserEntity user, String courseName, Long authorid, Pageable pageable);
+	
+	@Query(value = "SELECt c FROM CourseEntity c "
+			+ " WHERE c.user!=?1 AND  c.blocked = False AND c.deleted = False AND c.name LIKE %?2% AND c.status = True AND c.user.id=?3")
+	public List<CourseEntity> getPublicCoursesOfAuthor(UserEntity user, String courseName, Long authorid);
+	
+	
 	//get course for admin
 	@Query(value = "SELECT c FROM CourseEntity c "
 			+ " WHERE c.id=?1 AND c.deleted = False ")
 	public CourseEntity getCourseNotDeleteForAdmin(Long courseid);
+	
+	//get total courses for admin
+	@Query(value ="SELECT COUNT(c) FROM CourseEntity c "
+			+ " WHERE c.deleted=False")
+	public int getTotalCourses();
+	
+	//get total public courses for admin
+	@Query(value ="SELECT COUNT(c) FROM CourseEntity c "
+			+ " WHERE c.deleted=False AND c.status=True AND c.blocked=False")
+	public int getTotalPublicCourses();
+	
+	//get total private courses for admin
+	@Query(value ="SELECT COUNT(c) FROM CourseEntity c "
+			+ " WHERE c.deleted=False AND c.status=False AND c.blocked=False")
+	public int getTotalPrivateCourses();
+	
+	//get total private courses for admin
+	@Query(value ="SELECT COUNT(c) FROM CourseEntity c "
+			+ " WHERE c.deleted=False AND c.blocked=True")
+	public int getTotalBlockedCourses();
 }

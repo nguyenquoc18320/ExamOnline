@@ -35,4 +35,18 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>{
 			+ " WHERE u.name LIKE %?1%")
 	public List<UserEntity> findAllbySearch( String search);
 	
+	
+	//get total users for admin
+	@Query(value="SELECT COUNT(u) FROM UserEntity u")
+	public int getTotalUsers();
+	
+	//get total active users for admin
+	@Query(value="SELECT COUNT(u) FROM UserEntity u "
+			+ " WHERE u.status=True")
+	public int getTotalActiveUsers();
+	
+	//get total active users for admin
+	@Query(value="SELECT COUNT(u) FROM UserEntity u "
+			+ " WHERE u.status=False")
+	public int getTotalDisableUsers();
 }

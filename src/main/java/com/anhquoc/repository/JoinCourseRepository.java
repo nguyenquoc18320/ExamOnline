@@ -40,5 +40,10 @@ public interface JoinCourseRepository extends JpaRepository<JoinCourse, UserJoin
 	@Query(value = "SELECT j.course FROM JoinCourse j WHERE j.id.userid = ?1 AND j.id.courseid=?2 AND j.status=True AND j.course.blocked = False")
 	CourseEntity getCourseByUser(Long userid, Long courseid);
 	
-
+	/*
+	 * get number of users joining a course
+	 */
+	@Query(value="SELECT COUNT(j) FROM JoinCourse j "
+			+ " WHERE j.id.courseid = ?1 AND j.course.deleted = FALSE AND j.status=True")
+	int numberUsersJoiningCourse(Long courseid);
 }

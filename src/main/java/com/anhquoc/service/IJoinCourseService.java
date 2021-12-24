@@ -17,4 +17,9 @@ public interface IJoinCourseService {
 	
 	public boolean joinPublicCourse(Long userid, Long courseid);
 	public boolean checkJoinCourse(Long userid, Long courseid);
+	
+	/*
+	 * get number of users joining a course
+	 */
+	public int numberUsersJoiningCourse(Long courseid);
 }
