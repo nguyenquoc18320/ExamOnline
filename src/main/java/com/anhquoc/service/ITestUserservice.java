@@ -1,7 +1,9 @@
 package com.anhquoc.service;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.data.domain.Pageable;
 
 import com.anhquoc.entity.TestUserEntity;
@@ -20,4 +22,9 @@ public interface ITestUserservice {
 	public List<TestUserEntity> getResultsForAuthor(Long testid, Long authorid);
 	
 	public List<TestUserEntity> getResultsByTestId(Long testid);
+	
+	/*
+	 * get result exel file
+	 */
+	public ByteArrayInputStream getResultExcelFile(Long testid, Long authorid);
 }

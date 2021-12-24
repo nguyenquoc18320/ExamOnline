@@ -8,9 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.anhquoc.entity.AccountEntity;
-import com.anhquoc.entity.CourseEntity;
 import com.anhquoc.entity.TemporaryStorage;
-import com.anhquoc.entity.TestEntity;
 import com.anhquoc.entity.UserEntity;
 import com.anhquoc.repository.AccountRepository;
 import com.anhquoc.repository.TemporaryStorageRepository;
@@ -115,6 +113,8 @@ public class UserService implements IUserService {
 //		return user;
 //	}
 	
+	//get user by id
+	
 	@Override
 	public List<UserEntity> getListUser() {
 
@@ -159,5 +159,6 @@ public class UserService implements IUserService {
 			return users;
 		}
 	
+
 
 }

@@ -1,10 +1,16 @@
 package com.anhquoc.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -262,9 +268,48 @@ public class TestUserService implements ITestUserservice {
 
 		return testUsers;
 	}
+
 	@Override
 	public List<TestUserEntity> getResultsByTestId(Long testid) {
 		List<TestUserEntity> results = testUserRepository.getTestResultbyTestid(testid);
 		return results;
+	}
+
+	/*
+	 * get result excel file
+	 */
+	@Override
+	public ByteArrayInputStream getResultExcelFile(Long testid, Long authorid) {
+		HSSFWorkbook workbook = new HSSFWorkbook();
+
+		HSSFSheet sheet = workbook.createSheet("sheet1");
+
+		List<TestUserEntity> results = this.getResultsForAuthor(testid, authorid);
+		
+		TestEntity test = testRepository.findOneById(testid);
+
+		try {
+			HSSFRow row = sheet.createRow(0);
+			row.createCell(0).setCellValue("Course: " + test.getCourse().getName() + " - Test: " + test.getName());
+			
+			for (int i = 1; i < results.size()+1; i++) {
+				row = sheet.createRow(i);
+				row.createCell(0).setCellValue("" + results.get(i-1).getUser().getName());
+				row.createCell(1).setCellValue("" + results.get(i-1).getUser().getEmail());
+				row.createCell(2).setCellValue("" + results.get(i-1).getScore());
+			}
+
+
+			ByteArrayOutputStream output =  new ByteArrayOutputStream();
+			workbook.write(output);
+
+			// closing the workbook
+			workbook.close();
+
+			return new ByteArrayInputStream(output.toByteArray());
+			
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 }

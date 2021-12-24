@@ -219,4 +219,16 @@ public class JoinCourseService implements IJoinCourseService {
 		return false;
 	}
 	
+	/*
+	 * get number of users join course
+	 */
+	@Override
+	public int numberUsersJoiningCourse(Long courseid) {
+		try {
+			return joinCourseRepository.numberUsersJoiningCourse(courseid);
+		}catch(Exception ex) {
+			return 0;
+		}
+	}
+	
 }

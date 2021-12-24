@@ -118,4 +118,13 @@ public class JoinCourseAPI {
 		boolean result = joinCourseService.joinPublicCourse(userid, courseid);
 		return result;
 	}
+	
+	/*
+	 * get numbers of users joining a course
+	 */
+	@GetMapping(value="/course/num-users")
+	public int numberUsersJoiningcourse(@RequestParam("courseid") Long courseid) {
+		int numUsers = joinCourseService.numberUsersJoiningCourse(courseid);
+		return numUsers;
+	}
 }

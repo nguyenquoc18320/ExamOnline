@@ -43,6 +43,13 @@ public interface ICourseService {
 	public List<CourseEntity> getPublicCourses(Long userid, String courseName);
 	
 	/*
+	 * get public courses of certain author for other users
+	 */
+	public List<CourseEntity> getPublicCoursesOfAuthorid(Long userid, String courseName, Long authorid, Pageable pageable);
+	public List<CourseEntity> getPublicCoursesOfAuthorid(Long userid, String courseName, Long authorid);
+	
+	
+	/*
 	 * get course for admin
 	 */
 	public CourseEntity getCourseForAdmin(Long courseid);

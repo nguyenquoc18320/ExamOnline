@@ -425,6 +425,40 @@ public class CourseService implements ICourseService {
 	}
 	
 	/*
+	 * get public courses of certain author for other users
+	 */
+	@Override
+	public List<CourseEntity> getPublicCoursesOfAuthorid(Long userid, String courseName, Long authorid,
+			Pageable pageable) {
+		//get user requiring 
+		UserEntity user = userRepository.findOneById(userid);
+		List<CourseEntity> courseList = new ArrayList<CourseEntity>();
+		
+		if(user!=null) {
+			courseList = courseRepository.getPublicCoursesOfAuthor(user, courseName, authorid, pageable);
+			
+		}
+		
+		return courseList;
+	}
+	
+	@Override
+	public List<CourseEntity> getPublicCoursesOfAuthorid(Long userid, String courseName, Long authorid) {
+		//get user requiring 
+		UserEntity user = userRepository.findOneById(userid);
+		List<CourseEntity> courseList = new ArrayList<CourseEntity>();
+		
+		if(user!=null) {
+			courseList = courseRepository.getPublicCoursesOfAuthor(user, courseName, authorid);
+			
+		}
+		
+		return courseList;
+	}
+	
+	
+	
+	/*
 	 * get course for admin
 	 * not consider block status
 	 */
